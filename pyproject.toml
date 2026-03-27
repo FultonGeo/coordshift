@@ -1,0 +1,42 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+
+[project]
+name = "coordshift"
+version = "0.1.0"
+description = "Universal coordinate system conversion for CSV and tabular data"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.10"
+authors = [
+    { name = "Nick Fulton" }
+]
+keywords = ["gis", "coordinates", "crs", "projection", "epsg", "pyproj", "survey", "gnss"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Topic :: Scientific/Engineering :: GIS",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+]
+dependencies = [
+    "pyproj>=3.5",
+    "pandas>=2.0",
+    "click>=8.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest", "ruff", "build", "twine"]
+
+[project.scripts]
+coordshift = "coordshift.cli:cli"
+
+[tool.ruff]
+line-length = 88
+target-version = "py310"
