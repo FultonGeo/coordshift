@@ -11,6 +11,17 @@ This project follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.1.1] - 2026-03-28
+
+Documentation and packaging metadata only; runtime code unchanged.
+
+### Changed
+
+- README and `docs/examples.md`: PyPI as the primary install path.
+- `pyproject.toml`: `[project.urls]` for PyPI project page links.
+
+---
+
 ## [0.1.0] - 2026-03-28
 
 Initial alpha release.
@@ -52,6 +63,10 @@ Initial alpha release.
 
 - `scripts/gen_nad83_2011_spcs_js.py` — fetches and formats the NAD83(2011) SPCS catalog as JSON.
 - `scripts/merge_spcs_into_index.py` — embeds the generated JSON catalog into `coordshift.html`.
+
+### Distribution
+
+- Published on PyPI as [`coordshift`](https://pypi.org/project/coordshift/) (`pip install coordshift`).
 
 ### Design notes
 

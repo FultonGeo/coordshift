@@ -6,6 +6,14 @@
 
 Worked examples for the CLI, Python API, and browser app.
 
+## Installation
+
+```bash
+pip install coordshift
+```
+
+See the package on PyPI: https://pypi.org/project/coordshift/
+
 ---
 
 ## CLI

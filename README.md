@@ -54,18 +54,18 @@ Tools like cs2cs, ogr2ogr, and raw pyproj are powerful but assume you already sp
 
 ## Installation
 
-Install from source until the first PyPI release:
+Install from [PyPI](https://pypi.org/project/coordshift/) (Python 3.10+):
+
+```bash
+pip install coordshift
+```
+
+**From source** (for development or unreleased changes):
 
 ```bash
 git clone https://github.com/FultonGeo/coordshift.git
 cd coordshift
 pip install -e .
-```
-
-Or, once published:
-
-```bash
-pip install coordshift
 ```
 
 ## Usage
@@ -213,4 +213,4 @@ MIT. See [LICENSE](LICENSE).
 
 Nick Fulton — geospatial work, FAA Part 107, drone and survey experience.
 
-Repository: [FultonGeo/coordshift](https://github.com/FultonGeo/coordshift).
+**Links:** [PyPI](https://pypi.org/project/coordshift/) · [GitHub](https://github.com/FultonGeo/coordshift)
