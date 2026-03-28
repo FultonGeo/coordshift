@@ -29,3 +29,12 @@ Thumbs.db
 
 # Cursor editor artifacts
 cursorrules
+.cursor/
+
+# Local test / scratch data (may contain real survey data)
+test.csv
+test_converted.csv
+*.test.csv
+
+# Accidental duplicate gitignore without dot
+gitignore
