@@ -9,6 +9,13 @@ This project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+### Changed
+
+- **Breaking:** `convert()` and `coordshift convert` no longer overwrite the original X/Y columns. Converted values are now always written to new columns placed immediately after the originals.
+- Default output column names are now `{x}_converted` / `{y}_converted` (e.g. `lon_converted`, `lat_converted`). Previously, no suffix meant in-place replacement.
+- `--suffix` (CLI) / `suffix=` (API) now controls the column name suffix only; the default is `"_converted"`. Passing `--suffix _proj` produces `lon_proj`, `lat_proj`.
+- Same behaviour in `coordshift.html`: converted columns are inserted right after the originals in the downloaded CSV.
+
 ---
 
 ## [0.1.0] - 2026-03-27

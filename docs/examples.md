@@ -12,7 +12,7 @@ Worked examples for the CLI, Python API, and browser app.
 coordshift convert survey_points.csv --from EPSG:4326 --to EPSG:2965 --x lon --y lat
 ```
 
-Output is written to `survey_points_converted.csv` by default. Use `--out` to choose a path:
+The original `lon` and `lat` columns are always preserved. Converted values are written to `lon_converted` and `lat_converted`, placed immediately after their originals. Output is saved to `survey_points_converted.csv` by default. Use `--out` to choose a path:
 
 ```bash
 coordshift convert survey_points.csv --from EPSG:4326 --to EPSG:2965 --out projected.csv
@@ -39,15 +39,15 @@ coordshift search "indiana"
 coordshift search "utm zone 16"
 ```
 
-### Keep original columns with `--suffix`
+### Custom column name suffix with `--suffix`
 
-By default the X/Y columns are replaced in-place. To keep the originals and write converted values into new columns:
+By default converted columns are named `lon_converted` and `lat_converted`. Use `--suffix` to customise:
 
 ```bash
 coordshift convert survey_points.csv --from wgs84 --to indiana-east --suffix _proj
 ```
 
-Input `lon`, `lat` columns are preserved. New `lon_proj`, `lat_proj` columns hold the projected values.
+Original `lon`, `lat` columns are preserved. Converted values go into `lon_proj` and `lat_proj`, placed immediately after them.
 
 ### PROJ strings
 
@@ -86,6 +86,7 @@ df = convert(
     x="lon",
     y="lat",
 )
+# Columns: lon, lon_converted, lat, lat_converted, <other original columns>
 print(df.head())
 df.to_csv("survey_points_projected.csv", index=False)
 ```
@@ -106,7 +107,7 @@ print(f"Original:  {-86.15}, {39.77}")
 print(f"Round-trip: {xs_back[0]:.6f}, {ys_back[0]:.6f}")
 ```
 
-### Using `--suffix` programmatically
+### Custom suffix programmatically
 
 ```python
 from coordshift import convert
@@ -118,7 +119,7 @@ df = convert(
     suffix="_proj",
     output="survey_points_with_proj.csv",
 )
-# lon, lat columns preserved; lon_proj, lat_proj added
+# Columns: lon, lon_proj, lat, lat_proj, <other originals>
 print(df.columns.tolist())
 ```
 
@@ -141,8 +142,8 @@ import pandas as pd
 from coordshift import convert
 
 df = convert("gps_log.csv", from_crs="wgs84", to_crs="utm-16n")
-# Filter points inside a bounding box (projected coords)
-df_clipped = df[(df["lon"] > 500000) & (df["lon"] < 600000)]
+# Filter points inside a bounding box using the converted (projected) coords
+df_clipped = df[(df["lon_converted"] > 500000) & (df["lon_converted"] < 600000)]
 df_clipped.to_csv("clipped.csv", index=False)
 ```
 
@@ -173,6 +174,6 @@ lon,lat,site
 
 Expected output after converting to Indiana State Plane East (EPSG:2965):
 
-| lon | lat | site |
-|-----|-----|------|
-| 192222.22 | 1647282.68 | Bloomington vicinity |
+| lon | lon_converted | lat | lat_converted | site |
+|-----|---------------|-----|----------------|------|
+| -86.15 | 192222.22 | 39.77 | 1647282.68 | Bloomington vicinity |

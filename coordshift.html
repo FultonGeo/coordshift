@@ -629,10 +629,16 @@
       if (!Number.isFinite(newX) || !Number.isFinite(newY)) {
         return Object.assign({}, row, { _error: true });
       }
-      const copy = Object.assign({}, row);
-      copy[outX] = newX;
-      copy[outY] = newY;
-      return copy;
+      // Build row with converted columns inserted right after their originals
+      const newRow = {};
+      const keys = Object.keys(row);
+      for (let ki = 0; ki < keys.length; ki++) {
+        const k = keys[ki];
+        newRow[k] = row[k];
+        if (k === xColName) newRow[outX] = newX;
+        if (k === yColName) newRow[outY] = newY;
+      }
+      return newRow;
     });
     return { rows: converted, outXCol: outX, outYCol: outY };
   }

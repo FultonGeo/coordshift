@@ -65,13 +65,20 @@ def cli():
 @click.option("--y", default=None, help="Y/latitude/northing column name (auto-detected if omitted)")
 @click.option(
     "--suffix",
-    default=None,
-    help="Append to X/Y column names for output (e.g. _converted). "
-    "If omitted, X/Y columns are overwritten.",
+    default="_converted",
+    show_default=True,
+    help="Suffix for the output column names (e.g. '_proj' produces lon_proj, lat_proj). "
+    "Original X/Y columns are always kept; converted values go into new columns "
+    "placed right after the originals.",
 )
 @click.option("--out", default=None, help="Output file path (default: input_converted.csv)")
 def convert(filepath, from_crs, to_crs, x, y, suffix, out):
-    """Convert coordinate columns in a CSV file from one CRS to another."""
+    """Convert coordinate columns in a CSV file from one CRS to another.
+
+    Original X/Y columns are preserved. Converted values are written to new
+    columns (e.g. lon_converted, lat_converted) placed immediately after the
+    originals. Use --suffix to customise the column name suffix.
+    """
     output_path = out if out else _default_output_path(filepath)
     x_col = x if x else None
     y_col = y if y else None

@@ -33,8 +33,9 @@ Tools like cs2cs, ogr2ogr, and raw pyproj are powerful but assume you already sp
 - Convert any EPSG/PROJ CRS to any other
 - Auto-detect common column names (lat, lon, x, y, easting, northing, etc.)
 - Source and target CRS via EPSG code, PROJ string, or friendly preset name
-- Preserve all non-coordinate columns in output
-- Optional `--suffix` mode to write new columns without overwriting originals
+- Preserve all columns in output — original X/Y columns are always kept
+- Converted coordinates written to new columns placed immediately after the originals
+- Customisable output column suffix (default `_converted`, e.g. `lon_converted`, `lat_converted`)
 - CLI for one-off conversions
 - Python API for scripting and pipelines
 - Browser-based converter (`coordshift.html`) with map preview — works offline
@@ -65,7 +66,7 @@ pip install coordshift
 
 ### CLI
 
-Basic conversion:
+Basic conversion (original `lon`/`lat` columns are preserved; converted values go into `lon_converted`/`lat_converted` placed right after them):
 
 ```bash
 coordshift convert input.csv --from EPSG:4326 --to EPSG:2965 --x lon --y lat
@@ -77,7 +78,7 @@ With output path:
 coordshift convert input.csv --from EPSG:4326 --to EPSG:2965 --x lon --y lat --out output.csv
 ```
 
-Keep original columns and write converted coords to new columns with a suffix:
+Custom column name suffix (produces `lon_proj`, `lat_proj` instead of the default `lon_converted`, `lat_converted`):
 
 ```bash
 coordshift convert input.csv --from EPSG:4326 --to EPSG:2965 --suffix _proj
@@ -111,6 +112,7 @@ df = convert(
     x="lon",
     y="lat",
 )
+# df now has lon, lon_converted, lat, lat_converted (plus any other original columns)
 df.to_csv("field_points_converted.csv", index=False)
 
 results = search_crs("indiana east")

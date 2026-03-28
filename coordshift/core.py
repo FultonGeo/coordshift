@@ -52,10 +52,14 @@ def convert(
     x: str | None = None,
     y: str | None = None,
     output: str | None = None,
-    suffix: str | None = None,
+    suffix: str = "_converted",
 ) -> pd.DataFrame:
     """
     Convert coordinate columns in a CSV file from one CRS to another.
+
+    The original X/Y columns are always preserved. Converted values are written
+    to new columns named ``{x}{suffix}`` and ``{y}{suffix}``, inserted immediately
+    after their respective originals.
 
     Args:
         filepath: Path to the input CSV file.
@@ -64,12 +68,13 @@ def convert(
         x: Name of the X/longitude/easting column. Auto-detected if not provided.
         y: Name of the Y/latitude/northing column. Auto-detected if not provided.
         output: Path to save the output CSV. If None, returns DataFrame only.
-        suffix: If set (e.g. ``"_converted"``), write transformed coordinates to new columns
-            ``{x}{suffix}`` and ``{y}{suffix}`` and leave the original X/Y columns unchanged.
-            If ``None``, the X/Y columns are replaced in-place (default).
+        suffix: Suffix appended to X/Y column names to form the output column names
+            (default ``"_converted"``). For example, with ``x="lon"`` and
+            ``suffix="_proj"``, the output column is ``"lon_proj"``.
 
     Returns:
-        pandas DataFrame with converted coordinate columns. All other columns preserved.
+        pandas DataFrame with original coordinate columns preserved and new converted
+        columns inserted immediately after them. All other columns are unchanged.
     """
     from_resolved = resolve_crs(from_crs)
     to_resolved = resolve_crs(to_crs)
@@ -91,23 +96,29 @@ def convert(
             f"lon/lat (hints: {io.X_COLUMN_HINTS}, {io.Y_COLUMN_HINTS})."
         )
 
+    x_out = f"{x_col}{suffix}"
+    y_out = f"{y_col}{suffix}"
+    for name in (x_out, y_out):
+        if name in df_in.columns:
+            raise ValueError(
+                f"Column {name!r} already exists. Choose a different --suffix or rename the input column."
+            )
+
     out = df_in.copy()
     xs = out[x_col].astype(float).tolist()
     ys = out[y_col].astype(float).tolist()
     new_xs, new_ys = transform_points(xs, ys, from_resolved, to_resolved)
-    if suffix:
-        x_out = f"{x_col}{suffix}"
-        y_out = f"{y_col}{suffix}"
-        for name in (x_out, y_out):
-            if name in out.columns:
-                raise ValueError(
-                    f"Column {name!r} already exists. Choose a different --suffix or rename the input column."
-                )
-        out[x_out] = new_xs
-        out[y_out] = new_ys
-    else:
-        out[x_col] = new_xs
-        out[y_col] = new_ys
+
+    out[x_out] = new_xs
+    out[y_out] = new_ys
+
+    # Insert the new columns immediately after their originals
+    cols = [c for c in out.columns if c not in (x_out, y_out)]
+    x_idx = cols.index(x_col)
+    cols.insert(x_idx + 1, x_out)
+    y_idx = cols.index(y_col)
+    cols.insert(y_idx + 1, y_out)
+    out = out[cols]
 
     if output is not None:
         io.write_csv(out, output)

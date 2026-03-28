@@ -44,7 +44,7 @@ def test_invalid_crs_raises_crerror() -> None:
 
 
 def test_convert_reads_and_writes(tmp_path: Path) -> None:
-    """convert() auto-detects columns and writes output without mutating source path."""
+    """convert() auto-detects columns, preserves originals, and adds converted cols after them."""
     inp = FIXTURES / "wgs84_points.csv"
     outp = tmp_path / "out.csv"
     df = convert(
@@ -54,10 +54,17 @@ def test_convert_reads_and_writes(tmp_path: Path) -> None:
         output=str(outp),
     )
     assert outp.is_file()
-    assert "lon" in df.columns and "lat" in df.columns
-    # Same column names; values are now easting/northing (EPSG:2965)
-    assert df["lon"].iloc[0] == pytest.approx(192222.22, abs=1.0)
-    assert df["lat"].iloc[0] == pytest.approx(1647282.68, abs=1.0)
+    # Originals preserved unchanged
+    assert df["lon"].iloc[0] == pytest.approx(-86.15, abs=1e-6)
+    assert df["lat"].iloc[0] == pytest.approx(39.77, abs=1e-6)
+    # Converted columns added with default _converted suffix
+    assert "lon_converted" in df.columns and "lat_converted" in df.columns
+    assert df["lon_converted"].iloc[0] == pytest.approx(192222.22, abs=1.0)
+    assert df["lat_converted"].iloc[0] == pytest.approx(1647282.68, abs=1.0)
+    # Converted columns sit immediately after the originals
+    cols = list(df.columns)
+    assert cols.index("lon_converted") == cols.index("lon") + 1
+    assert cols.index("lat_converted") == cols.index("lat") + 1
 
 
 def test_convert_with_suffix_keeps_original_columns(tmp_path: Path) -> None:
