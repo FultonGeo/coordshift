@@ -2,7 +2,8 @@
 presets.py — Friendly name to EPSG mappings.
 
 Lets users type "indiana-east" instead of "EPSG:2965". Add more as needed.
-Organized by category. All EPSG codes reference NAD83(2011) where applicable.
+Organized by category. EPSG realizations vary by entry: most State Plane zones
+use classic NAD83; Iowa uses NAD83(2011). Check each entry's description.
 """
 
 PRESETS: dict[str, dict] = {
@@ -24,6 +25,12 @@ PRESETS: dict[str, dict] = {
     "indiana-west": {
         "epsg": "EPSG:2966",
         "description": "Indiana State Plane West (NAD83, meters)",
+    },
+
+    # --- Iowa State Plane (NAD83(2011), ftUS) — proj4.js needs explicit defs in web app ---
+    "iowa-north-ftus": {
+        "epsg": "EPSG:6463",
+        "description": "Iowa State Plane North (NAD83(2011), US survey feet)",
     },
 
     # --- Arizona State Plane ---

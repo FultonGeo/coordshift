@@ -63,8 +63,14 @@ def cli():
 @click.option("--to", "to_crs", required=True, help="Target CRS (e.g. EPSG:2965, indiana-east)")
 @click.option("--x", default=None, help="X/longitude/easting column name (auto-detected if omitted)")
 @click.option("--y", default=None, help="Y/latitude/northing column name (auto-detected if omitted)")
+@click.option(
+    "--suffix",
+    default=None,
+    help="Append to X/Y column names for output (e.g. _converted). "
+    "If omitted, X/Y columns are overwritten.",
+)
 @click.option("--out", default=None, help="Output file path (default: input_converted.csv)")
-def convert(filepath, from_crs, to_crs, x, y, out):
+def convert(filepath, from_crs, to_crs, x, y, suffix, out):
     """Convert coordinate columns in a CSV file from one CRS to another."""
     output_path = out if out else _default_output_path(filepath)
     x_col = x if x else None
@@ -78,6 +84,7 @@ def convert(filepath, from_crs, to_crs, x, y, out):
             x=x_col,
             y=y_col,
             output=output_path,
+            suffix=suffix,
         )
     except (
         CRSError,

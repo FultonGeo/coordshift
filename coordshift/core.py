@@ -52,6 +52,7 @@ def convert(
     x: str | None = None,
     y: str | None = None,
     output: str | None = None,
+    suffix: str | None = None,
 ) -> pd.DataFrame:
     """
     Convert coordinate columns in a CSV file from one CRS to another.
@@ -63,6 +64,9 @@ def convert(
         x: Name of the X/longitude/easting column. Auto-detected if not provided.
         y: Name of the Y/latitude/northing column. Auto-detected if not provided.
         output: Path to save the output CSV. If None, returns DataFrame only.
+        suffix: If set (e.g. ``"_converted"``), write transformed coordinates to new columns
+            ``{x}{suffix}`` and ``{y}{suffix}`` and leave the original X/Y columns unchanged.
+            If ``None``, the X/Y columns are replaced in-place (default).
 
     Returns:
         pandas DataFrame with converted coordinate columns. All other columns preserved.
@@ -91,8 +95,19 @@ def convert(
     xs = out[x_col].astype(float).tolist()
     ys = out[y_col].astype(float).tolist()
     new_xs, new_ys = transform_points(xs, ys, from_resolved, to_resolved)
-    out[x_col] = new_xs
-    out[y_col] = new_ys
+    if suffix:
+        x_out = f"{x_col}{suffix}"
+        y_out = f"{y_col}{suffix}"
+        for name in (x_out, y_out):
+            if name in out.columns:
+                raise ValueError(
+                    f"Column {name!r} already exists. Choose a different --suffix or rename the input column."
+                )
+        out[x_out] = new_xs
+        out[y_out] = new_ys
+    else:
+        out[x_col] = new_xs
+        out[y_col] = new_ys
 
     if output is not None:
         io.write_csv(out, output)

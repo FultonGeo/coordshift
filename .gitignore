@@ -26,3 +26,6 @@ htmlcov/
 *.swp
 .DS_Store
 Thumbs.db
+
+# Cursor editor artifacts
+cursorrules

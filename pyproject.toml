@@ -32,7 +32,7 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
-dev = ["pytest", "ruff", "build", "twine"]
+dev = ["pytest>=7.0", "ruff>=0.4", "build>=1.0", "twine>=4.0"]
 
 [project.scripts]
 coordshift = "coordshift.cli:cli"

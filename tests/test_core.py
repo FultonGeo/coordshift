@@ -58,3 +58,22 @@ def test_convert_reads_and_writes(tmp_path: Path) -> None:
     # Same column names; values are now easting/northing (EPSG:2965)
     assert df["lon"].iloc[0] == pytest.approx(192222.22, abs=1.0)
     assert df["lat"].iloc[0] == pytest.approx(1647282.68, abs=1.0)
+
+
+def test_convert_with_suffix_keeps_original_columns(tmp_path: Path) -> None:
+    """With suffix=, new columns hold projected coords and lon/lat stay as WGS84."""
+    inp = FIXTURES / "wgs84_points.csv"
+    outp = tmp_path / "out_suffix.csv"
+    df = convert(
+        str(inp),
+        from_crs="wgs84",
+        to_crs="indiana-east",
+        suffix="_converted",
+        output=str(outp),
+    )
+    assert outp.is_file()
+    assert df["lon"].iloc[0] == pytest.approx(-86.15, abs=1e-6)
+    assert df["lat"].iloc[0] == pytest.approx(39.77, abs=1e-6)
+    assert "lon_converted" in df.columns and "lat_converted" in df.columns
+    assert df["lon_converted"].iloc[0] == pytest.approx(192222.22, abs=1.0)
+    assert df["lat_converted"].iloc[0] == pytest.approx(1647282.68, abs=1.0)
