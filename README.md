@@ -1,5 +1,11 @@
 # coordshift
 
+> **⚠ Alpha software — use with caution**
+>
+> coordshift is in early development (pre-v1.0). APIs and output formats may change without notice.
+> **Always verify converted coordinates against a trusted independent source before using them in any survey, legal, safety-critical, or production workflow.**
+> The authors provide no warranty and accept no liability for errors in coordinate conversion results. Use at your own risk.
+
 Universal coordinate system conversion for CSV and tabular data — built for GIS analysts, surveyors, and drone mapping workflows.
 
 ## What it does
@@ -194,6 +200,10 @@ Contributions welcome. Open an issue before large changes so direction stays ali
 2. Create a branch: `git checkout -b feature/my-feature`
 3. Commit and push
 4. Open a pull request
+
+## Disclaimer
+
+coordshift is alpha software provided **as-is**, without warranty of any kind, express or implied. Coordinate conversion results depend on the accuracy of the underlying PROJ library, the correctness of the CRS definitions used, and the quality of the input data. Always double-check converted coordinates against an authoritative source before using them in any survey, engineering, legal, or safety-critical context. The authors and contributors are not responsible for errors, losses, or damages arising from the use of this software.
 
 ## License
 

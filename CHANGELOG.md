@@ -9,18 +9,14 @@ This project follows [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
-### Changed
-
-- **Breaking:** `convert()` and `coordshift convert` no longer overwrite the original X/Y columns. Converted values are now always written to new columns placed immediately after the originals.
-- Default output column names are now `{x}_converted` / `{y}_converted` (e.g. `lon_converted`, `lat_converted`). Previously, no suffix meant in-place replacement.
-- `--suffix` (CLI) / `suffix=` (API) now controls the column name suffix only; the default is `"_converted"`. Passing `--suffix _proj` produces `lon_proj`, `lat_proj`.
-- Same behaviour in `coordshift.html`: converted columns are inserted right after the originals in the downloaded CSV.
-
 ---
 
-## [0.1.0] - 2026-03-27
+## [0.1.0] - 2026-03-28
 
-Initial release.
+Initial alpha release.
+
+> **Alpha software.** Always verify converted coordinates against a trusted independent source.
+> The authors provide no warranty and accept no liability for errors in conversion results.
 
 ### Added
 
@@ -56,3 +52,9 @@ Initial release.
 
 - `scripts/gen_nad83_2011_spcs_js.py` — fetches and formats the NAD83(2011) SPCS catalog as JSON.
 - `scripts/merge_spcs_into_index.py` — embeds the generated JSON catalog into `coordshift.html`.
+
+### Design notes
+
+- Original X/Y columns are always preserved in output. Converted values are written to new columns placed immediately after the originals (e.g. `lon` → `lon_converted`, `lat` → `lat_converted`).
+- `--suffix` / `suffix=` controls the appended column name suffix; default is `_converted`.
+- Same behaviour applies in `coordshift.html`: converted columns appear right after the originals in the downloaded CSV.

@@ -1,5 +1,9 @@
 # coordshift — Examples
 
+> **⚠ Alpha software — always verify results**
+>
+> coordshift is in early development. Always cross-check converted coordinates against a trusted independent source before using them in any survey, legal, safety-critical, or production context. The authors accept no liability for errors in conversion results.
+
 Worked examples for the CLI, Python API, and browser app.
 
 ---
