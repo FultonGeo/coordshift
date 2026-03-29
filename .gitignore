@@ -27,7 +27,7 @@ htmlcov/
 .DS_Store
 Thumbs.db
 
-# Cursor editor artifacts
+# Local editor config (keep out of VCS)
 cursorrules
 .cursor/
 

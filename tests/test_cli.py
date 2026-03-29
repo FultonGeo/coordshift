@@ -5,6 +5,7 @@ from pathlib import Path
 import pytest
 from click.testing import CliRunner
 
+from coordshift import __version__
 from coordshift.cli import cli
 
 FIXTURES = Path(__file__).resolve().parent / "fixtures"
@@ -133,4 +134,4 @@ class TestVersionFlag:
         """--version prints the package version."""
         result = runner.invoke(cli, ["--version"])
         assert result.exit_code == 0
-        assert "0.1.0" in result.output
+        assert __version__ in result.output

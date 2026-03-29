@@ -167,6 +167,20 @@
       min-height: 1.2em;
     }
     .hint { font-size: 0.75rem; color: #94a3b8; margin-top: 0.25rem; }
+    .help-callout {
+      font-size: 0.8rem;
+      color: #475569;
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 0.65rem 0.75rem;
+      margin: 0.25rem 0 0.75rem;
+      line-height: 1.45;
+    }
+    .help-callout a {
+      font-weight: 500;
+      color: var(--accent);
+    }
     #map {
       flex: 1;
       min-width: 0;
@@ -274,6 +288,17 @@
           <textarea id="crs-to-proj" class="crs-proj-input" placeholder="+proj=lcc +lat_0=41.5 +lon_0=-93.5 …"></textarea>
         </div>
 
+        <h2>State Plane zones</h2>
+        <div class="help-callout">
+          <a
+            href="https://hub.arcgis.com/datasets/esri::usa-state-plane-zones-nad83/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >USA State Plane zones NAD83</a>
+          (Esri Hub) — interactive map to look up zone names. Search for your project address to
+          confirm you are converting to the correct SPCS zone. Opens in a new tab so you do not lose this page.
+        </div>
+
         <h2>Columns</h2>
         <label for="col-x">X column</label>
         <select id="col-x"></select>
@@ -370,7 +395,8 @@
 
   const CUSTOM_SELECT_VALUE = "__custom_proj__";
 
-  const map = L.map("map").setView([39.77, -86.15], 6);
+  /** Geographic center of the contiguous U.S. (near Lebanon, KS); zoom shows full lower 48. */
+  const map = L.map("map").setView([39.8283, -98.5795], 4);
   /** Carto CDN serves OSM-based tiles; avoids tile.openstreetmap.org 403s some users see (usage policy / blocking). */
   const street = L.tileLayer(
     "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",

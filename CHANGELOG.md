@@ -11,6 +11,26 @@ This project follows [Semantic Versioning](https://semver.org/).
 
 ---
 
+## [0.1.2] - 2026-03-29
+
+Browser app improvements only; Python library and CLI unchanged.
+
+### Added
+
+- `coordshift.html`: **State Plane zones** help callout in the sidebar with a direct link to the
+  [USA State Plane Zones NAD83](https://hub.arcgis.com/datasets/esri::usa-state-plane-zones-nad83/)
+  Esri Hub map so users can look up SPCS zone names (e.g. Indiana East) and confirm the correct
+  zone for their project location. Link opens in a new tab (`target="_blank"`) so the app page is
+  not lost.
+
+### Changed
+
+- `coordshift.html`: default map view now centers on the geographic center of the contiguous U.S.
+  (39.83°N, 98.58°W, zoom 4 / full lower-48 view) instead of Indiana. After a conversion the map
+  still auto-fits to the plotted points.
+
+---
+
 ## [0.1.1] - 2026-03-28
 
 Documentation and packaging metadata only; runtime code unchanged.
