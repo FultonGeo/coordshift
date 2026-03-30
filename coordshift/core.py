@@ -38,8 +38,8 @@ def transform_points(
     except PyprojCRSError as e:
         raise CRSError(
             f"Could not build coordinate transform from {from_crs!r} to {to_crs!r}: {e}. "
-            "Use resolvable CRS strings or preset names. "
-            "Run `coordshift search` to list presets."
+            "Use resolvable EPSG codes or PROJ strings. "
+            "Run `coordshift search` to find EPSG codes by name (USA-filtered)."
         ) from e
     tx, ty = transformer.transform(xs, ys)
     return [float(v) for v in tx], [float(v) for v in ty]
@@ -63,8 +63,8 @@ def convert(
 
     Args:
         filepath: Path to the input CSV file.
-        from_crs: Source CRS — EPSG code (e.g. "EPSG:4326"), PROJ string, or preset name.
-        to_crs: Target CRS — same formats accepted.
+        from_crs: Source CRS — EPSG code (e.g. "EPSG:4326"), PROJ string, or other form PROJ accepts.
+        to_crs: Target CRS — same formats as ``from_crs``.
         x: Name of the X/longitude/easting column. Auto-detected if not provided.
         y: Name of the Y/latitude/northing column. Auto-detected if not provided.
         output: Path to save the output CSV. If None, returns DataFrame only.

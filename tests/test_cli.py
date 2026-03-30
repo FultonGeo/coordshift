@@ -24,7 +24,7 @@ class TestConvertCommand:
         out = tmp_path / "out.csv"
         result = runner.invoke(
             cli,
-            ["convert", str(inp), "--from", "wgs84", "--to", "indiana-east", "--out", str(out)],
+            ["convert", str(inp), "--from", "EPSG:4326", "--to", "EPSG:2965", "--out", str(out)],
         )
         assert result.exit_code == 0, result.output
         assert out.is_file()
@@ -50,9 +50,9 @@ class TestConvertCommand:
                 "convert",
                 str(inp),
                 "--from",
-                "wgs84",
+                "EPSG:4326",
                 "--to",
-                "indiana-east",
+                "EPSG:2965",
                 "--suffix",
                 "_proj",
                 "--out",
@@ -68,7 +68,7 @@ class TestConvertCommand:
         out = tmp_path / "out.csv"
         result = runner.invoke(
             cli,
-            ["convert", str(inp), "--from", "EPSG:9999999999", "--to", "indiana-east", "--out", str(out)],
+            ["convert", str(inp), "--from", "EPSG:9999999999", "--to", "EPSG:2965", "--out", str(out)],
         )
         assert result.exit_code == 1
 
@@ -76,7 +76,7 @@ class TestConvertCommand:
         """convert exits with a non-zero code when the input file does not exist."""
         result = runner.invoke(
             cli,
-            ["convert", "nonexistent.csv", "--from", "wgs84", "--to", "indiana-east"],
+            ["convert", "nonexistent.csv", "--from", "EPSG:4326", "--to", "EPSG:2965"],
         )
         assert result.exit_code != 0
 
@@ -86,14 +86,14 @@ class TestConvertCommand:
         out = tmp_path / "out.csv"
         result = runner.invoke(
             cli,
-            ["convert", str(inp), "--from", "wgs84", "--to", "indiana-east", "--out", str(out)],
+            ["convert", str(inp), "--from", "EPSG:4326", "--to", "EPSG:2965", "--out", str(out)],
         )
         assert "1 row" in result.output
 
 
 class TestSearchCommand:
     def test_search_returns_results(self, runner: CliRunner) -> None:
-        """search prints matching preset rows for a known keyword."""
+        """search prints matching EPSG rows for a known keyword."""
         result = runner.invoke(cli, ["search", "indiana"])
         assert result.exit_code == 0
         assert "indiana" in result.output.lower()
@@ -102,31 +102,13 @@ class TestSearchCommand:
         """search prints a 'no results' message for an unknown keyword."""
         result = runner.invoke(cli, ["search", "zzznomatch999"])
         assert result.exit_code == 0
-        assert "No presets found" in result.output
+        assert "No results found" in result.output
 
     def test_search_utm(self, runner: CliRunner) -> None:
         """search finds UTM zone entries."""
         result = runner.invoke(cli, ["search", "utm"])
         assert result.exit_code == 0
         assert "utm" in result.output.lower()
-
-
-class TestListCrsCommand:
-    def test_list_crs_shows_presets(self, runner: CliRunner) -> None:
-        """list-crs prints at least one preset line."""
-        result = runner.invoke(cli, ["list-crs"])
-        assert result.exit_code == 0
-        assert len(result.output.strip().splitlines()) >= 1
-
-    def test_list_crs_contains_wgs84(self, runner: CliRunner) -> None:
-        """list-crs output includes the wgs84 preset."""
-        result = runner.invoke(cli, ["list-crs"])
-        assert "wgs84" in result.output.lower()
-
-    def test_list_crs_contains_indiana_east(self, runner: CliRunner) -> None:
-        """list-crs output includes the indiana-east preset."""
-        result = runner.invoke(cli, ["list-crs"])
-        assert "indiana-east" in result.output.lower()
 
 
 class TestVersionFlag:

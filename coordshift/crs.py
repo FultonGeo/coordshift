@@ -1,24 +1,26 @@
 """
 crs.py — CRS resolution and search.
 
-Responsible for turning whatever the user types (EPSG code, PROJ string,
-friendly name like "indiana-east") into something pyproj can use.
+Turns EPSG codes and PROJ strings into a canonical form pyproj accepts.
 """
 
 from pyproj import CRS
+from pyproj.aoi import AreaOfInterest
+from pyproj.database import query_crs_info
 from pyproj.exceptions import CRSError as PyprojCRSError
 
-from coordshift.presets import PRESETS
+# Bounding box that covers the contiguous US, Alaska, Hawaii, and territories.
+_USA_AOI = AreaOfInterest(
+    west_lon_degree=-180.0,
+    south_lat_degree=15.0,
+    east_lon_degree=-60.0,
+    north_lat_degree=72.0,
+)
 
 
 class CRSError(ValueError):
     """Raised when a CRS string cannot be resolved."""
     pass
-
-
-def _normalize_preset_key(user_input: str) -> str:
-    """Normalize user text for lookup in PRESETS (lowercase, hyphenated)."""
-    return user_input.strip().lower().replace(" ", "-")
 
 
 def resolve_crs(crs_input: str) -> str:
@@ -27,14 +29,13 @@ def resolve_crs(crs_input: str) -> str:
 
     Accepts:
         - EPSG codes as string: "EPSG:4326" or "4326"
-        - PROJ strings: "+proj=longlat +datum=WGS84"
-        - Preset names: "wgs84", "indiana-east", "nad83"
+        - Other strings PROJ can parse unambiguously (PROJ definitions, authority names, etc.)
 
     Args:
         crs_input: The CRS string to resolve.
 
     Returns:
-        A CRS string ready for pyproj.
+        A CRS string ready for pyproj (preferably ``EPSG:xxxx`` when available).
 
     Raises:
         CRSError: If the CRS cannot be resolved.
@@ -42,21 +43,17 @@ def resolve_crs(crs_input: str) -> str:
     raw = crs_input.strip()
     if not raw:
         raise CRSError(
-            "Empty CRS input. Provide an EPSG code, PROJ string, or preset name "
-            "(try `coordshift search`)."
+            "Empty CRS input. Provide an EPSG code or PROJ string "
+            "(use `coordshift search` to find EPSG codes for the USA)."
         )
-
-    preset_key = _normalize_preset_key(raw)
-    if preset_key in PRESETS:
-        return str(PRESETS[preset_key]["epsg"])
 
     try:
         crs = CRS(raw)
     except PyprojCRSError as e:
         raise CRSError(
             f"Could not resolve CRS {raw!r}: {e}. "
-            "Try an EPSG code, a PROJ string, or a preset name. "
-            "Run `coordshift search` to list presets."
+            "Use an EPSG code, a PROJ string, or another form PROJ accepts unambiguously. "
+            "Run `coordshift search` to find EPSG codes by name (USA-filtered)."
         ) from e
 
     epsg = crs.to_epsg()
@@ -67,29 +64,42 @@ def resolve_crs(crs_input: str) -> str:
 
 def search_crs(query: str) -> list[dict]:
     """
-    Search for CRS presets matching a query string.
+    Search the EPSG database for CRS whose names contain all query words.
+
+    Results are filtered to the USA bounding box so common projected CRS
+    (State Plane, UTM zones, etc.) for the US are returned without noise
+    from unrelated global entries.  All words must match (AND logic), so
+    multi-word queries like "iowa south" work correctly.
 
     Args:
-        query: Search term (e.g. "indiana", "state plane", "utm zone 16").
+        query: One or more keywords (e.g. "iowa south", "utm zone 15").
 
     Returns:
-        List of matching preset dicts with keys: name, epsg, description.
+        List of dicts with keys: epsg, name, type, area_of_use.
+        Sorted by EPSG code (ascending).
     """
-    q = query.strip().lower()
-    if not q:
+    words = query.strip().lower().split()
+    if not words:
         return []
 
+    db_results = query_crs_info(
+        auth_name="EPSG",
+        area_of_interest=_USA_AOI,
+        allow_deprecated=False,
+    )
+
     matches: list[dict] = []
-    for name, data in PRESETS.items():
-        description = str(data.get("description", ""))
-        haystack_name = name.lower()
-        haystack_desc = description.lower()
-        if q in haystack_name or q in haystack_desc:
+    for info in db_results:
+        name_lower = info.name.lower()
+        if all(w in name_lower for w in words):
             matches.append(
                 {
-                    "name": name,
-                    "epsg": data["epsg"],
-                    "description": description,
+                    "epsg": f"EPSG:{info.code}",
+                    "name": info.name,
+                    "type": info.type.name if info.type else "",
+                    "area_of_use": info.area_of_use or "",
                 }
             )
+
+    matches.sort(key=lambda r: int(r["epsg"].split(":")[1]))
     return matches

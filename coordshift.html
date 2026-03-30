@@ -39,19 +39,157 @@
     header {
       background: var(--header-bg);
       color: var(--header-fg);
-      padding: 0.75rem 1.25rem;
+      padding: 0.6rem 1.25rem;
       flex-shrink: 0;
+    }
+    .header-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
     }
     header h1 {
       margin: 0;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+    }
+    .browser-ver {
+      font-size: 0.68rem;
       font-weight: 600;
+      opacity: 0.72;
+      letter-spacing: 0.03em;
+      margin-left: 0.4rem;
+      vertical-align: middle;
+      white-space: nowrap;
     }
-    header p {
-      margin: 0.25rem 0 0;
+    .help-btn {
+      margin-left: auto;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(241,245,249,0.45);
+      background: rgba(241,245,249,0.12);
+      color: var(--header-fg);
       font-size: 0.85rem;
-      opacity: 0.85;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      flex-shrink: 0;
+      transition: background 0.15s, border-color 0.15s;
     }
+    .help-btn:hover {
+      background: rgba(241,245,249,0.22);
+      border-color: rgba(241,245,249,0.7);
+    }
+    /* ---- Help modal ---- */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(15,23,42,0.55);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    .modal-backdrop[hidden] { display: none !important; }
+    .modal-box {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 8px 48px rgba(15,23,42,0.22);
+      width: 100%;
+      max-width: 520px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.5rem 1.75rem 1.75rem;
+    }
+    .modal-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1.1rem;
+    }
+    .modal-header h2 {
+      margin: 0;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #0f172a;
+      flex: 1;
+    }
+    .modal-close {
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      color: #64748b;
+      cursor: pointer;
+      padding: 0.1rem 0.3rem;
+      border-radius: 4px;
+      line-height: 1;
+    }
+    .modal-close:hover { background: #f1f5f9; color: #0f172a; }
+    .help-steps {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: step;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .help-steps li {
+      display: flex;
+      gap: 0.85rem;
+      align-items: flex-start;
+      counter-increment: step;
+    }
+    .help-steps li::before {
+      content: counter(step);
+      flex-shrink: 0;
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 1px;
+    }
+    .help-steps .step-body { flex: 1; }
+    .help-steps .step-title {
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: #0f172a;
+      display: block;
+      margin-bottom: 0.2rem;
+    }
+    .help-steps .step-desc {
+      font-size: 0.82rem;
+      color: #475569;
+      line-height: 1.5;
+      margin: 0;
+    }
+    .help-steps code {
+      font-size: 0.8rem;
+      background: #f1f5f9;
+      border-radius: 3px;
+      padding: 0 3px;
+    }
+    .modal-tip {
+      margin-top: 1.25rem;
+      padding: 0.65rem 0.85rem;
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      color: #475569;
+      line-height: 1.5;
+    }
+    .modal-tip strong { color: #0f172a; }
     .alpha-banner {
       background: #78350f;
       color: #fef3c7;
@@ -68,21 +206,21 @@
       overflow: hidden;
     }
     .panel {
-      width: 350px;
+      width: 280px;
       flex-shrink: 0;
       background: var(--panel);
       border-right: 1px solid #e2e8f0;
-      padding: 1rem;
+      padding: 0.75rem 0.85rem;
       overflow-y: auto;
       min-height: 0;
       -webkit-overflow-scrolling: touch;
     }
     .panel h2 {
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       text-transform: uppercase;
       letter-spacing: 0.04em;
       color: #64748b;
-      margin: 1rem 0 0.35rem;
+      margin: 0.75rem 0 0.3rem;
     }
     .panel h2:first-child { margin-top: 0; }
     label {
@@ -111,15 +249,15 @@
       padding: 0.35rem 0.5rem;
     }
     .dropzone {
-      border: 2px dashed #94a3b8;
-      border-radius: 8px;
-      padding: 1rem;
-      text-align: center;
+      border: 1.5px dashed #94a3b8;
+      border-radius: 6px;
+      padding: 0.3rem 0.65rem;
       cursor: pointer;
-      background: #f1f5f9;
-      margin-bottom: 0.75rem;
-      font-size: 0.9rem;
+      background: #f8fafc;
+      font-size: 0.82rem;
       color: #475569;
+      white-space: nowrap;
+      flex-shrink: 0;
     }
     .dropzone.dragover {
       border-color: var(--accent);
@@ -131,14 +269,12 @@
       cursor: pointer;
       border-radius: 6px;
       border: none;
-      padding: 0.5rem 0.85rem;
+      padding: 0.45rem 0.85rem;
       font-weight: 500;
     }
     button.primary {
       background: var(--accent);
       color: #fff;
-      width: 100%;
-      margin-top: 0.25rem;
     }
     button.primary:disabled {
       opacity: 0.5;
@@ -147,18 +283,107 @@
     button.secondary {
       background: #e2e8f0;
       color: #334155;
-      width: 100%;
-      margin-top: 0.35rem;
     }
     button.secondary:disabled {
       opacity: 0.5;
       cursor: not-allowed;
     }
-    .muted {
-      font-size: 0.8rem;
-      color: #64748b;
-      margin: 0.25rem 0 0.5rem;
+    /* ---- Bottom action bar ---- */
+    .bottom-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.45rem 1rem;
+      background: var(--panel);
+      border-top: 2px solid #e2e8f0;
+      flex-shrink: 0;
+      flex-wrap: wrap;
+      min-height: 50px;
     }
+    .bb-sep {
+      width: 1px;
+      height: 22px;
+      background: #cbd5e1;
+      flex-shrink: 0;
+    }
+    .bb-file-meta {
+      font-size: 0.8rem;
+      color: #475569;
+      white-space: nowrap;
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .bb-cols {
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+    .bb-cols label {
+      display: inline;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: #475569;
+      margin: 0;
+      white-space: nowrap;
+    }
+    .bb-cols select {
+      font: inherit;
+      font-size: 0.78rem;
+      padding: 0.28rem 0.4rem;
+      border: 1px solid #cbd5e1;
+      border-radius: 5px;
+      min-width: 72px;
+      max-width: 130px;
+      margin: 0;
+    }
+    .bb-btn {
+      padding: 0.38rem 0.8rem;
+      font-size: 0.85rem;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    /* Fixed height so CRS warnings / preview HTML never resize the bar (keeps Leaflet map size stable). */
+    .bb-status {
+      flex: 1;
+      min-width: 160px;
+      font-size: 0.79rem;
+      line-height: 1.4;
+      height: 5.5rem;
+      max-height: 5.5rem;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-sizing: border-box;
+      padding-right: 2px;
+      /* Light scroll affordance without eating much space */
+      scrollbar-gutter: stable;
+      align-self: center;
+    }
+    .bb-status .preview-status {
+      font-size: 0.79rem;
+      color: #1d4ed8;
+      min-height: 0;
+      margin: 0 0 0.2rem 0;
+    }
+    .bb-status .status-ok {
+      font-size: 0.79rem;
+      margin: 0 0 0.2rem 0;
+    }
+    .bb-status .field-error {
+      margin: 0 0 0.2rem 0;
+      display: block;
+    }
+    .bb-status .hint {
+      margin: 0;
+    }
+    .spcs-help-link {
+      display: block;
+      font-size: 0.75rem;
+      color: var(--accent);
+      margin-top: 0.5rem;
+      text-decoration: none;
+    }
+    .spcs-help-link:hover { text-decoration: underline; }
     .status-ok { color: var(--success); font-size: 0.85rem; margin: 0.5rem 0; }
     .field-error {
       color: var(--error);
@@ -187,6 +412,10 @@
       min-height: 0;
       z-index: 0;
     }
+    /* Ensure layer switch stays above tile/marker panes (Leaflet defaults can lose hit-testing after async fitBounds). */
+    .leaflet-control-container {
+      z-index: 1100 !important;
+    }
     .crs-custom-wrap {
       margin-bottom: 0.5rem;
     }
@@ -212,39 +441,101 @@
     .key-row button { width: auto; margin: 0; white-space: nowrap; }
     footer {
       text-align: center;
-      padding: 0.75rem;
-      font-size: 0.8rem;
-      color: #64748b;
-      border-top: 1px solid #e2e8f0;
+      padding: 0.3rem 1rem;
+      font-size: 0.72rem;
+      color: #94a3b8;
       background: var(--panel);
       flex-shrink: 0;
+      border-top: 1px solid #f1f5f9;
     }
-    footer a { color: var(--accent); text-decoration: none; }
+    footer a { color: #64748b; text-decoration: none; }
     footer a:hover { text-decoration: underline; }
+    .preview-status {
+      font-size: 0.82rem;
+      color: #1d4ed8;
+      margin: 0.35rem 0 0.35rem;
+      min-height: 1.5em;
+      line-height: 1.45;
+    }
+    .map-legend {
+      background: rgba(255,255,255,0.93);
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 0.45rem 0.65rem;
+      font-size: 0.78rem;
+      color: #334155;
+      line-height: 1.9;
+      box-shadow: 0 1px 5px rgba(0,0,0,0.1);
+      min-width: 190px;
+    }
+    .leg-dot {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      margin-right: 5px;
+      vertical-align: middle;
+    }
+    .crs-filter-note {
+      font-size: 0.75rem;
+      color: #64748b;
+      margin: -0.1rem 0 0.45rem;
+      line-height: 1.4;
+    }
+    .crs-filter-note a {
+      color: var(--accent);
+      cursor: pointer;
+      text-decoration: underline;
+    }
     @media (max-width: 768px) {
       main.wrap { flex-direction: column; }
       .panel {
         width: 100%;
         border-right: none;
         border-bottom: 1px solid #e2e8f0;
-        max-height: 45vh;
+        max-height: 40vh;
         flex-shrink: 0;
       }
-      #map {
-        flex: 1;
-        min-height: 0;
+      #map { flex: 1; min-height: 0; }
+      .bottom-bar { flex-wrap: wrap; }
+      .bb-status {
+        width: 100%;
+        height: 6rem;
+        max-height: 6rem;
       }
+    }
+    #drag-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(37, 99, 235, 0.08);
+    }
+    #drag-overlay.active {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .drag-overlay-inner {
+      background: #eff6ff;
+      border: 2.5px dashed #2563eb;
+      border-radius: 14px;
+      padding: 2rem 3.5rem;
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: #1d4ed8;
+      pointer-events: none;
+      box-shadow: 0 4px 32px rgba(37,99,235,0.13);
     }
   </style>
 </head>
 <body>
   <div class="app">
     <header>
-      <h1>coordshift — coordinate conversion (browser)</h1>
-      <p>
-        CSV stays in your browser. CRS catalog: WGS&nbsp;84 (4326, 3857), ITRF2014 frame epoch 2010.0 (EPSG&nbsp;9000), and NAD83(2011) projected/Conus zones (EPSG 6328–6999, excluding local engineering CRS).
-        Open this file directly in Chrome or Edge.
-      </p>
+      <div class="header-row">
+        <h1>coordshift <span class="browser-ver" title="Browser build">v0.2.0</span></h1>
+        <button class="help-btn" id="help-btn" aria-label="How to use coordshift" title="How to use coordshift">?</button>
+      </div>
     </header>
     <div class="alpha-banner" role="note">
       <strong>⚠ Alpha — verify all results.</strong>
@@ -253,77 +544,131 @@
     </div>
     <main class="wrap">
       <aside class="panel">
-        <h2>Data</h2>
-        <div class="dropzone" id="dropzone" role="button" tabindex="0">
-          <input type="file" id="file-input" accept=".csv,text/csv" />
-          <span id="dropzone-label">Drop a CSV here or click to browse</span>
-        </div>
-        <p class="muted" id="file-meta">No file loaded.</p>
-
         <h2>Source CRS</h2>
-        <input type="hidden" id="crs-from" value="EPSG:4326" />
+        <input type="hidden" id="crs-from" value="" />
         <label for="crs-from-search">Search</label>
         <input type="search" id="crs-from-search" placeholder="Name or EPSG code…" autocomplete="off" />
         <label for="crs-from-select">Pick from list</label>
-        <select id="crs-from-select" class="crs-select" size="8" aria-label="Source CRS"></select>
+        <select id="crs-from-select" class="crs-select" size="5" aria-label="Source CRS"></select>
         <div class="crs-meta" id="crs-from-meta"></div>
         <div class="field-error" id="crs-from-error"></div>
         <div class="crs-custom-wrap" id="crs-from-custom-wrap" hidden>
-          <p class="hint">Must start with <code>+proj=</code> (e.g. from <a href="https://epsg.io/" target="_blank" rel="noopener">epsg.io</a> → PROJ.4).</p>
+          <p class="hint">Must start with <code>+proj=</code> (e.g. <a href="https://epsg.io/" target="_blank" rel="noopener">epsg.io</a> → PROJ.4).</p>
           <label for="crs-from-proj">PROJ.4 definition</label>
           <textarea id="crs-from-proj" class="crs-proj-input" placeholder="+proj=longlat +datum=WGS84 +no_defs"></textarea>
         </div>
 
         <h2>Target CRS</h2>
-        <input type="hidden" id="crs-to" value="EPSG:6458" />
+        <input type="hidden" id="crs-to" value="" />
         <label for="crs-to-search">Search</label>
         <input type="search" id="crs-to-search" placeholder="Name or EPSG code…" autocomplete="off" />
         <label for="crs-to-select">Pick from list</label>
-        <select id="crs-to-select" class="crs-select" size="8" aria-label="Target CRS"></select>
+        <select id="crs-to-select" class="crs-select" size="5" aria-label="Target CRS"></select>
         <div class="crs-meta" id="crs-to-meta"></div>
+        <div class="crs-filter-note" id="crs-to-filter-note" hidden></div>
         <div class="field-error" id="crs-to-error"></div>
         <div class="crs-custom-wrap" id="crs-to-custom-wrap" hidden>
-          <p class="hint">Must start with <code>+proj=</code> (e.g. from <a href="https://epsg.io/" target="_blank" rel="noopener">epsg.io</a> → PROJ.4).</p>
+          <p class="hint">Must start with <code>+proj=</code> (e.g. <a href="https://epsg.io/" target="_blank" rel="noopener">epsg.io</a> → PROJ.4).</p>
           <label for="crs-to-proj">PROJ.4 definition</label>
           <textarea id="crs-to-proj" class="crs-proj-input" placeholder="+proj=lcc +lat_0=41.5 +lon_0=-93.5 …"></textarea>
         </div>
 
-        <h2>State Plane zones</h2>
-        <div class="help-callout">
-          <a
-            href="https://hub.arcgis.com/datasets/esri::usa-state-plane-zones-nad83/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >USA State Plane zones NAD83</a>
-          (Esri Hub) — interactive map to look up zone names. Search for your project address to
-          confirm you are converting to the correct SPCS zone. Opens in a new tab so you do not lose this page.
-        </div>
-
-        <h2>Columns</h2>
-        <label for="col-x">X column</label>
-        <select id="col-x"></select>
-        <label for="col-y">Y column</label>
-        <select id="col-y"></select>
-
-        <button type="button" class="primary" id="btn-convert" disabled>Convert</button>
-        <p class="muted" id="convert-hint">Load a CSV to enable conversion.</p>
-        <div class="status-ok" id="convert-status"></div>
-
-        <button type="button" class="secondary" id="btn-download" disabled>Download CSV</button>
-        <p class="hint" id="file-protocol-hint" hidden>
-          If the map stays empty or download does not start, open this page via a local server (e.g. run <code>python -m http.server</code> in the <code>docs</code> folder) instead of double-clicking the file — some browsers restrict <code>file://</code>.
-        </p>
+        <a class="spcs-help-link"
+           href="https://hub.arcgis.com/datasets/esri::usa-state-plane-zones-nad83/"
+           target="_blank" rel="noopener noreferrer">
+          ↗ Find your State Plane zone (SPCS interactive map)
+        </a>
       </aside>
       <div id="map" aria-label="Map"></div>
     </main>
-    <footer>
-      <div>
-        coordshift · Open Source ·
-        <a href="https://github.com/FultonGeo/coordshift" rel="noopener">GitHub</a> ·
-        <code>pip install coordshift</code>
+
+    <!-- Bottom action bar: file, columns, convert, download, status -->
+    <div class="bottom-bar" id="bottom-bar">
+      <div class="dropzone" id="dropzone" role="button" tabindex="0" title="Click to browse or drag a CSV here">
+        <input type="file" id="file-input" accept=".csv,text/csv" />
+        <span id="dropzone-label">📂 Open CSV</span>
       </div>
-      <div>Your data never leaves your browser.</div>
+      <span class="bb-file-meta" id="file-meta">No file loaded.</span>
+      <div class="bb-sep"></div>
+      <div class="bb-cols">
+        <label for="col-x">X</label>
+        <select id="col-x"></select>
+        <label for="col-y">Y</label>
+        <select id="col-y"></select>
+      </div>
+      <div class="bb-sep"></div>
+      <button type="button" class="primary bb-btn" id="btn-convert" disabled>Convert</button>
+      <button type="button" class="secondary bb-btn" id="btn-download" disabled>⬇ Download</button>
+      <div class="bb-status">
+        <div class="preview-status" id="preview-status"></div>
+        <div class="status-ok" id="convert-status"></div>
+        <span class="field-error" id="crs-pair-error" style="font-size:0.79rem"></span>
+        <p class="hint" id="file-protocol-hint" hidden style="margin:0;font-size:0.75rem">
+          Download not starting? Open via a local server: <code>python -m http.server</code>
+        </p>
+      </div>
+    </div>
+
+    <footer>
+      coordshift · open source ·
+      <a href="https://github.com/FultonGeo/coordshift" rel="noopener">GitHub</a> ·
+      <code>pip install coordshift</code> ·
+      your data never leaves your browser.
     </footer>
+  </div>
+
+  <div id="drag-overlay" aria-hidden="true">
+    <div class="drag-overlay-inner">📂 Drop CSV anywhere to load</div>
+  </div>
+
+  <div id="help-modal" class="modal-backdrop" hidden role="dialog" aria-modal="true" aria-labelledby="help-modal-title">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h2 id="help-modal-title">How to use coordshift</h2>
+        <button class="modal-close" id="help-close" aria-label="Close help">✕</button>
+      </div>
+      <ol class="help-steps">
+        <li>
+          <div class="step-body">
+            <span class="step-title">Pick your Source CRS</span>
+            <p class="step-desc">In the left panel, search by name or EPSG code and select the coordinate reference system your CSV is currently in — e.g. <code>WGS 84</code>, <code>Indiana East</code>, or <code>6326</code>.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <span class="step-title">Load your CSV file</span>
+            <p class="step-desc">Drag and drop a <code>.csv</code> file anywhere on the page, or click <strong>Open CSV</strong> in the bottom bar to browse. Your data never leaves the browser.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <span class="step-title">Confirm X and Y columns</span>
+            <p class="step-desc">coordshift auto-detects common column names (<code>lon</code>, <code>lat</code>, <code>x</code>, <code>easting</code>, etc.). If it picks the wrong ones, use the X / Y dropdowns in the bottom bar to correct them.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <span class="step-title">Verify your points on the map</span>
+            <p class="step-desc">Blue dots appear for the first 25 rows. If they land in the right place, your Source CRS is correct. If not, try a different CRS or swap X and Y.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <span class="step-title">Pick your Target CRS</span>
+            <p class="step-desc">Choose the CRS you want to convert <em>to</em>. The list is automatically filtered to options relevant to your data's location. Red dots appear on the map — <strong>red dots that overlap the blue dots mean the CRS is correct</strong>. Click any dot to inspect the coordinate values.</p>
+          </div>
+        </li>
+        <li>
+          <div class="step-body">
+            <span class="step-title">Convert and Download</span>
+            <p class="step-desc">Click <strong>Convert</strong> to process all rows. The map switches to showing original (blue) vs. converted (red) points side by side. Click <strong>⬇ Download</strong> to save the result as a CSV with new columns appended.</p>
+          </div>
+        </li>
+      </ol>
+      <div class="modal-tip">
+        <strong>Tip:</strong> For high-accuracy survey work (NAD83(2011) ↔ ITRF2014), coordshift applies a built-in 14-parameter Helmert transform — no grids or internet needed. For the full Python CLI, run <code>pip install coordshift</code>.
+      </div>
+    </div>
   </div>
 
   <script type="application/json" id="nad83-2011-spcs-data">[{"code":6355,"label":"Alabama East \u2014 EPSG:6355"},{"code":6356,"label":"Alabama West \u2014 EPSG:6356"},{"code":6393,"label":"Alaska Albers \u2014 EPSG:6393"},{"code":6394,"label":"Alaska zone 1 \u2014 EPSG:6394"},{"code":6403,"label":"Alaska zone 10 \u2014 EPSG:6403"},{"code":6395,"label":"Alaska zone 2 \u2014 EPSG:6395"},{"code":6396,"label":"Alaska zone 3 \u2014 EPSG:6396"},{"code":6397,"label":"Alaska zone 4 \u2014 EPSG:6397"},{"code":6398,"label":"Alaska zone 5 \u2014 EPSG:6398"},{"code":6399,"label":"Alaska zone 6 \u2014 EPSG:6399"},{"code":6400,"label":"Alaska zone 7 \u2014 EPSG:6400"},{"code":6401,"label":"Alaska zone 8 \u2014 EPSG:6401"},{"code":6402,"label":"Alaska zone 9 \u2014 EPSG:6402"},{"code":6404,"label":"Arizona Central \u2014 EPSG:6404"},{"code":6405,"label":"Arizona Central (ft) \u2014 EPSG:6405"},{"code":6406,"label":"Arizona East \u2014 EPSG:6406"},{"code":6407,"label":"Arizona East (ft) \u2014 EPSG:6407"},{"code":6408,"label":"Arizona West \u2014 EPSG:6408"},{"code":6409,"label":"Arizona West (ft) \u2014 EPSG:6409"},{"code":6410,"label":"Arkansas North \u2014 EPSG:6410"},{"code":6411,"label":"Arkansas North (ftUS) \u2014 EPSG:6411"},{"code":6412,"label":"Arkansas South \u2014 EPSG:6412"},{"code":6413,"label":"Arkansas South (ftUS) \u2014 EPSG:6413"},{"code":6414,"label":"California Albers \u2014 EPSG:6414"},{"code":6415,"label":"California zone 1 \u2014 EPSG:6415"},{"code":6416,"label":"California zone 1 (ftUS) \u2014 EPSG:6416"},{"code":6417,"label":"California zone 2 \u2014 EPSG:6417"},{"code":6418,"label":"California zone 2 (ftUS) \u2014 EPSG:6418"},{"code":6419,"label":"California zone 3 \u2014 EPSG:6419"},{"code":6420,"label":"California zone 3 (ftUS) \u2014 EPSG:6420"},{"code":6421,"label":"California zone 4 \u2014 EPSG:6421"},{"code":6422,"label":"California zone 4 (ftUS) \u2014 EPSG:6422"},{"code":6423,"label":"California zone 5 \u2014 EPSG:6423"},{"code":6424,"label":"California zone 5 (ftUS) \u2014 EPSG:6424"},{"code":6425,"label":"California zone 6 \u2014 EPSG:6425"},{"code":6426,"label":"California zone 6 (ftUS) \u2014 EPSG:6426"},{"code":6427,"label":"Colorado Central \u2014 EPSG:6427"},{"code":6428,"label":"Colorado Central (ftUS) \u2014 EPSG:6428"},{"code":6429,"label":"Colorado North \u2014 EPSG:6429"},{"code":6430,"label":"Colorado North (ftUS) \u2014 EPSG:6430"},{"code":6431,"label":"Colorado South \u2014 EPSG:6431"},{"code":6432,"label":"Colorado South (ftUS) \u2014 EPSG:6432"},{"code":6433,"label":"Connecticut \u2014 EPSG:6433"},{"code":6434,"label":"Connecticut (ftUS) \u2014 EPSG:6434"},{"code":6350,"label":"Conus Albers \u2014 EPSG:6350"},{"code":6435,"label":"Delaware \u2014 EPSG:6435"},{"code":6436,"label":"Delaware (ftUS) \u2014 EPSG:6436"},{"code":6437,"label":"Florida East \u2014 EPSG:6437"},{"code":6438,"label":"Florida East (ftUS) \u2014 EPSG:6438"},{"code":6439,"label":"Florida GDL Albers \u2014 EPSG:6439"},{"code":6440,"label":"Florida North \u2014 EPSG:6440"},{"code":6441,"label":"Florida North (ftUS) \u2014 EPSG:6441"},{"code":6442,"label":"Florida West \u2014 EPSG:6442"},{"code":6443,"label":"Florida West (ftUS) \u2014 EPSG:6443"},{"code":6444,"label":"Georgia East \u2014 EPSG:6444"},{"code":6445,"label":"Georgia East (ftUS) \u2014 EPSG:6445"},{"code":6446,"label":"Georgia West \u2014 EPSG:6446"},{"code":6447,"label":"Georgia West (ftUS) \u2014 EPSG:6447"},{"code":6448,"label":"Idaho Central \u2014 EPSG:6448"},{"code":6449,"label":"Idaho Central (ftUS) \u2014 EPSG:6449"},{"code":6450,"label":"Idaho East \u2014 EPSG:6450"},{"code":6451,"label":"Idaho East (ftUS) \u2014 EPSG:6451"},{"code":6452,"label":"Idaho West \u2014 EPSG:6452"},{"code":6453,"label":"Idaho West (ftUS) \u2014 EPSG:6453"},{"code":6454,"label":"Illinois East \u2014 EPSG:6454"},{"code":6455,"label":"Illinois East (ftUS) \u2014 EPSG:6455"},{"code":6456,"label":"Illinois West \u2014 EPSG:6456"},{"code":6457,"label":"Illinois West (ftUS) \u2014 EPSG:6457"},{"code":6458,"label":"Indiana East \u2014 EPSG:6458"},{"code":6459,"label":"Indiana East (ftUS) \u2014 EPSG:6459"},{"code":6460,"label":"Indiana West \u2014 EPSG:6460"},{"code":6461,"label":"Indiana West (ftUS) \u2014 EPSG:6461"},{"code":6462,"label":"Iowa North \u2014 EPSG:6462"},{"code":6463,"label":"Iowa North (ftUS) \u2014 EPSG:6463"},{"code":6464,"label":"Iowa South \u2014 EPSG:6464"},{"code":6465,"label":"Iowa South (ftUS) \u2014 EPSG:6465"},{"code":6924,"label":"Kansas LCC \u2014 EPSG:6924"},{"code":6925,"label":"Kansas LCC (ftUS) \u2014 EPSG:6925"},{"code":6466,"label":"Kansas North \u2014 EPSG:6466"},{"code":6467,"label":"Kansas North (ftUS) \u2014 EPSG:6467"},{"code":6468,"label":"Kansas South \u2014 EPSG:6468"},{"code":6469,"label":"Kansas South (ftUS) \u2014 EPSG:6469"},{"code":6470,"label":"Kentucky North \u2014 EPSG:6470"},{"code":6471,"label":"Kentucky North (ftUS) \u2014 EPSG:6471"},{"code":6472,"label":"Kentucky Single Zone \u2014 EPSG:6472"},{"code":6473,"label":"Kentucky Single Zone (ftUS) \u2014 EPSG:6473"},{"code":6474,"label":"Kentucky South \u2014 EPSG:6474"},{"code":6475,"label":"Kentucky South (ftUS) \u2014 EPSG:6475"},{"code":6476,"label":"Louisiana North \u2014 EPSG:6476"},{"code":6477,"label":"Louisiana North (ftUS) \u2014 EPSG:6477"},{"code":6478,"label":"Louisiana South \u2014 EPSG:6478"},{"code":6479,"label":"Louisiana South (ftUS) \u2014 EPSG:6479"},{"code":6480,"label":"Maine CS2000 Central \u2014 EPSG:6480"},{"code":6481,"label":"Maine CS2000 East \u2014 EPSG:6481"},{"code":6482,"label":"Maine CS2000 West \u2014 EPSG:6482"},{"code":6483,"label":"Maine East \u2014 EPSG:6483"},{"code":6484,"label":"Maine East (ftUS) \u2014 EPSG:6484"},{"code":6485,"label":"Maine West \u2014 EPSG:6485"},{"code":6486,"label":"Maine West (ftUS) \u2014 EPSG:6486"},{"code":6487,"label":"Maryland \u2014 EPSG:6487"},{"code":6488,"label":"Maryland (ftUS) \u2014 EPSG:6488"},{"code":6489,"label":"Massachusetts Island \u2014 EPSG:6489"},{"code":6490,"label":"Massachusetts Island (ftUS) \u2014 EPSG:6490"},{"code":6491,"label":"Massachusetts Mainland \u2014 EPSG:6491"},{"code":6492,"label":"Massachusetts Mainland (ftUS) \u2014 EPSG:6492"},{"code":6493,"label":"Michigan Central \u2014 EPSG:6493"},{"code":6494,"label":"Michigan Central (ft) \u2014 EPSG:6494"},{"code":6495,"label":"Michigan North \u2014 EPSG:6495"},{"code":6496,"label":"Michigan North (ft) \u2014 EPSG:6496"},{"code":6497,"label":"Michigan Oblique Mercator \u2014 EPSG:6497"},{"code":6498,"label":"Michigan South \u2014 EPSG:6498"},{"code":6499,"label":"Michigan South (ft) \u2014 EPSG:6499"},{"code":6500,"label":"Minnesota Central \u2014 EPSG:6500"},{"code":6501,"label":"Minnesota Central (ftUS) \u2014 EPSG:6501"},{"code":6502,"label":"Minnesota North \u2014 EPSG:6502"},{"code":6503,"label":"Minnesota North (ftUS) \u2014 EPSG:6503"},{"code":6504,"label":"Minnesota South \u2014 EPSG:6504"},{"code":6505,"label":"Minnesota South (ftUS) \u2014 EPSG:6505"},{"code":6506,"label":"Mississippi East \u2014 EPSG:6506"},{"code":6507,"label":"Mississippi East (ftUS) \u2014 EPSG:6507"},{"code":6508,"label":"Mississippi TM \u2014 EPSG:6508"},{"code":6509,"label":"Mississippi West \u2014 EPSG:6509"},{"code":6510,"label":"Mississippi West (ftUS) \u2014 EPSG:6510"},{"code":6511,"label":"Missouri Central \u2014 EPSG:6511"},{"code":6512,"label":"Missouri East \u2014 EPSG:6512"},{"code":6513,"label":"Missouri West \u2014 EPSG:6513"},{"code":6514,"label":"Montana \u2014 EPSG:6514"},{"code":6515,"label":"Montana (ft) \u2014 EPSG:6515"},{"code":6516,"label":"Nebraska \u2014 EPSG:6516"},{"code":6880,"label":"Nebraska (ftUS) \u2014 EPSG:6880"},{"code":6518,"label":"Nevada Central \u2014 EPSG:6518"},{"code":6519,"label":"Nevada Central (ftUS) \u2014 EPSG:6519"},{"code":6520,"label":"Nevada East \u2014 EPSG:6520"},{"code":6521,"label":"Nevada East (ftUS) \u2014 EPSG:6521"},{"code":6522,"label":"Nevada West \u2014 EPSG:6522"},{"code":6523,"label":"Nevada West (ftUS) \u2014 EPSG:6523"},{"code":6524,"label":"New Hampshire \u2014 EPSG:6524"},{"code":6525,"label":"New Hampshire (ftUS) \u2014 EPSG:6525"},{"code":6526,"label":"New Jersey \u2014 EPSG:6526"},{"code":6527,"label":"New Jersey (ftUS) \u2014 EPSG:6527"},{"code":6528,"label":"New Mexico Central \u2014 EPSG:6528"},{"code":6529,"label":"New Mexico Central (ftUS) \u2014 EPSG:6529"},{"code":6530,"label":"New Mexico East \u2014 EPSG:6530"},{"code":6531,"label":"New Mexico East (ftUS) \u2014 EPSG:6531"},{"code":6532,"label":"New Mexico West \u2014 EPSG:6532"},{"code":6533,"label":"New Mexico West (ftUS) \u2014 EPSG:6533"},{"code":6534,"label":"New York Central \u2014 EPSG:6534"},{"code":6535,"label":"New York Central (ftUS) \u2014 EPSG:6535"},{"code":6536,"label":"New York East \u2014 EPSG:6536"},{"code":6537,"label":"New York East (ftUS) \u2014 EPSG:6537"},{"code":6538,"label":"New York Long Island \u2014 EPSG:6538"},{"code":6539,"label":"New York Long Island (ftUS) \u2014 EPSG:6539"},{"code":6540,"label":"New York West \u2014 EPSG:6540"},{"code":6541,"label":"New York West (ftUS) \u2014 EPSG:6541"},{"code":6542,"label":"North Carolina \u2014 EPSG:6542"},{"code":6543,"label":"North Carolina (ftUS) \u2014 EPSG:6543"},{"code":6544,"label":"North Dakota North \u2014 EPSG:6544"},{"code":6545,"label":"North Dakota North (ft) \u2014 EPSG:6545"},{"code":6546,"label":"North Dakota South \u2014 EPSG:6546"},{"code":6547,"label":"North Dakota South (ft) \u2014 EPSG:6547"},{"code":6548,"label":"Ohio North \u2014 EPSG:6548"},{"code":6549,"label":"Ohio North (ftUS) \u2014 EPSG:6549"},{"code":6550,"label":"Ohio South \u2014 EPSG:6550"},{"code":6551,"label":"Ohio South (ftUS) \u2014 EPSG:6551"},{"code":6552,"label":"Oklahoma North \u2014 EPSG:6552"},{"code":6553,"label":"Oklahoma North (ftUS) \u2014 EPSG:6553"},{"code":6554,"label":"Oklahoma South \u2014 EPSG:6554"},{"code":6555,"label":"Oklahoma South (ftUS) \u2014 EPSG:6555"},{"code":6787,"label":"Oregon Baker zone (ft) \u2014 EPSG:6787"},{"code":6786,"label":"Oregon Baker zone (m) \u2014 EPSG:6786"},{"code":6799,"label":"Oregon Bend-Burns zone (ft) \u2014 EPSG:6799"},{"code":6798,"label":"Oregon Bend-Burns zone (m) \u2014 EPSG:6798"},{"code":6791,"label":"Oregon Bend-Klamath Falls zone (ft) \u2014 EPSG:6791"},{"code":6790,"label":"Oregon Bend-Klamath Falls zone (m) \u2014 EPSG:6790"},{"code":6795,"label":"Oregon Bend-Redmond-Prineville zone (ft) \u2014 EPSG:6795"},{"code":6794,"label":"Oregon Bend-Redmond-Prineville zone (m) \u2014 EPSG:6794"},{"code":6803,"label":"Oregon Canyonville-Grants Pass zone (ft) \u2014 EPSG:6803"},{"code":6802,"label":"Oregon Canyonville-Grants Pass zone (m) \u2014 EPSG:6802"},{"code":6843,"label":"Oregon Coast zone (ft) \u2014 EPSG:6843"},{"code":6842,"label":"Oregon Coast zone (m) \u2014 EPSG:6842"},{"code":6807,"label":"Oregon Columbia River East zone (ft) \u2014 EPSG:6807"},{"code":6806,"label":"Oregon Columbia River East zone (m) \u2014 EPSG:6806"},{"code":6811,"label":"Oregon Columbia River West zone (ft) \u2014 EPSG:6811"},{"code":6810,"label":"Oregon Columbia River West zone (m) \u2014 EPSG:6810"},{"code":6815,"label":"Oregon Cottage Grove-Canyonville zone (ft) \u2014 EPSG:6815"},{"code":6814,"label":"Oregon Cottage Grove-Canyonville zone (m) \u2014 EPSG:6814"},{"code":6819,"label":"Oregon Dufur-Madras zone (ft) \u2014 EPSG:6819"},{"code":6818,"label":"Oregon Dufur-Madras zone (m) \u2014 EPSG:6818"},{"code":6823,"label":"Oregon Eugene zone (ft) \u2014 EPSG:6823"},{"code":6822,"label":"Oregon Eugene zone (m) \u2014 EPSG:6822"},{"code":6557,"label":"Oregon GIC Lambert (ft) \u2014 EPSG:6557"},{"code":6827,"label":"Oregon Grants Pass-Ashland zone (ft) \u2014 EPSG:6827"},{"code":6826,"label":"Oregon Grants Pass-Ashland zone (m) \u2014 EPSG:6826"},{"code":6831,"label":"Oregon Gresham-Warm Springs zone (ft) \u2014 EPSG:6831"},{"code":6830,"label":"Oregon Gresham-Warm Springs zone (m) \u2014 EPSG:6830"},{"code":6556,"label":"Oregon LCC (m) \u2014 EPSG:6556"},{"code":6835,"label":"Oregon La Grande zone (ft) \u2014 EPSG:6835"},{"code":6834,"label":"Oregon La Grande zone (m) \u2014 EPSG:6834"},{"code":6558,"label":"Oregon North \u2014 EPSG:6558"},{"code":6559,"label":"Oregon North (ft) \u2014 EPSG:6559"},{"code":6839,"label":"Oregon Ontario zone (ft) \u2014 EPSG:6839"},{"code":6838,"label":"Oregon Ontario zone (m) \u2014 EPSG:6838"},{"code":6847,"label":"Oregon Pendleton zone (ft) \u2014 EPSG:6847"},{"code":6846,"label":"Oregon Pendleton zone (m) \u2014 EPSG:6846"},{"code":6851,"label":"Oregon Pendleton-La Grande zone (ft) \u2014 EPSG:6851"},{"code":6850,"label":"Oregon Pendleton-La Grande zone (m) \u2014 EPSG:6850"},{"code":6855,"label":"Oregon Portland zone (ft) \u2014 EPSG:6855"},{"code":6854,"label":"Oregon Portland zone (m) \u2014 EPSG:6854"},{"code":6859,"label":"Oregon Salem zone (ft) \u2014 EPSG:6859"},{"code":6858,"label":"Oregon Salem zone (m) \u2014 EPSG:6858"},{"code":6863,"label":"Oregon Santiam Pass zone (ft) \u2014 EPSG:6863"},{"code":6862,"label":"Oregon Santiam Pass zone (m) \u2014 EPSG:6862"},{"code":6560,"label":"Oregon South \u2014 EPSG:6560"},{"code":6561,"label":"Oregon South (ft) \u2014 EPSG:6561"},{"code":6562,"label":"Pennsylvania North \u2014 EPSG:6562"},{"code":6563,"label":"Pennsylvania North (ftUS) \u2014 EPSG:6563"},{"code":6564,"label":"Pennsylvania South \u2014 EPSG:6564"},{"code":6565,"label":"Pennsylvania South (ftUS) \u2014 EPSG:6565"},{"code":6566,"label":"Puerto Rico and Virgin Is. \u2014 EPSG:6566"},{"code":6567,"label":"Rhode Island \u2014 EPSG:6567"},{"code":6568,"label":"Rhode Island (ftUS) \u2014 EPSG:6568"},{"code":6569,"label":"South Carolina \u2014 EPSG:6569"},{"code":6570,"label":"South Carolina (ft) \u2014 EPSG:6570"},{"code":6571,"label":"South Dakota North \u2014 EPSG:6571"},{"code":6572,"label":"South Dakota North (ftUS) \u2014 EPSG:6572"},{"code":6573,"label":"South Dakota South \u2014 EPSG:6573"},{"code":6574,"label":"South Dakota South (ftUS) \u2014 EPSG:6574"},{"code":6575,"label":"Tennessee \u2014 EPSG:6575"},{"code":6576,"label":"Tennessee (ftUS) \u2014 EPSG:6576"},{"code":6577,"label":"Texas Central \u2014 EPSG:6577"},{"code":6578,"label":"Texas Central (ftUS) \u2014 EPSG:6578"},{"code":6579,"label":"Texas Centric Albers Equal Area \u2014 EPSG:6579"},{"code":6580,"label":"Texas Centric Lambert Conformal \u2014 EPSG:6580"},{"code":6581,"label":"Texas North \u2014 EPSG:6581"},{"code":6582,"label":"Texas North (ftUS) \u2014 EPSG:6582"},{"code":6583,"label":"Texas North Central \u2014 EPSG:6583"},{"code":6584,"label":"Texas North Central (ftUS) \u2014 EPSG:6584"},{"code":6585,"label":"Texas South \u2014 EPSG:6585"},{"code":6586,"label":"Texas South (ftUS) \u2014 EPSG:6586"},{"code":6587,"label":"Texas South Central \u2014 EPSG:6587"},{"code":6588,"label":"Texas South Central (ftUS) \u2014 EPSG:6588"},{"code":6339,"label":"UTM zone 10N \u2014 EPSG:6339"},{"code":6340,"label":"UTM zone 11N \u2014 EPSG:6340"},{"code":6341,"label":"UTM zone 12N \u2014 EPSG:6341"},{"code":6342,"label":"UTM zone 13N \u2014 EPSG:6342"},{"code":6343,"label":"UTM zone 14N \u2014 EPSG:6343"},{"code":6344,"label":"UTM zone 15N \u2014 EPSG:6344"},{"code":6345,"label":"UTM zone 16N \u2014 EPSG:6345"},{"code":6346,"label":"UTM zone 17N \u2014 EPSG:6346"},{"code":6347,"label":"UTM zone 18N \u2014 EPSG:6347"},{"code":6348,"label":"UTM zone 19N \u2014 EPSG:6348"},{"code":6330,"label":"UTM zone 1N \u2014 EPSG:6330"},{"code":6331,"label":"UTM zone 2N \u2014 EPSG:6331"},{"code":6332,"label":"UTM zone 3N \u2014 EPSG:6332"},{"code":6333,"label":"UTM zone 4N \u2014 EPSG:6333"},{"code":6328,"label":"UTM zone 59N \u2014 EPSG:6328"},{"code":6334,"label":"UTM zone 5N \u2014 EPSG:6334"},{"code":6329,"label":"UTM zone 60N \u2014 EPSG:6329"},{"code":6335,"label":"UTM zone 6N \u2014 EPSG:6335"},{"code":6336,"label":"UTM zone 7N \u2014 EPSG:6336"},{"code":6337,"label":"UTM zone 8N \u2014 EPSG:6337"},{"code":6338,"label":"UTM zone 9N \u2014 EPSG:6338"},{"code":6619,"label":"Utah Central \u2014 EPSG:6619"},{"code":6625,"label":"Utah Central (ftUS) \u2014 EPSG:6625"},{"code":6620,"label":"Utah North \u2014 EPSG:6620"},{"code":6626,"label":"Utah North (ftUS) \u2014 EPSG:6626"},{"code":6621,"label":"Utah South \u2014 EPSG:6621"},{"code":6627,"label":"Utah South (ftUS) \u2014 EPSG:6627"},{"code":6589,"label":"Vermont \u2014 EPSG:6589"},{"code":6590,"label":"Vermont (ftUS) \u2014 EPSG:6590"},{"code":6591,"label":"Virginia Lambert \u2014 EPSG:6591"},{"code":6592,"label":"Virginia North \u2014 EPSG:6592"},{"code":6593,"label":"Virginia North (ftUS) \u2014 EPSG:6593"},{"code":6594,"label":"Virginia South \u2014 EPSG:6594"},{"code":6595,"label":"Virginia South (ftUS) \u2014 EPSG:6595"},{"code":6596,"label":"Washington North \u2014 EPSG:6596"},{"code":6597,"label":"Washington North (ftUS) \u2014 EPSG:6597"},{"code":6598,"label":"Washington South \u2014 EPSG:6598"},{"code":6599,"label":"Washington South (ftUS) \u2014 EPSG:6599"},{"code":6600,"label":"West Virginia North \u2014 EPSG:6600"},{"code":6601,"label":"West Virginia North (ftUS) \u2014 EPSG:6601"},{"code":6602,"label":"West Virginia South \u2014 EPSG:6602"},{"code":6603,"label":"West Virginia South (ftUS) \u2014 EPSG:6603"},{"code":6879,"label":"Wisconsin Central \u2014 EPSG:6879"},{"code":6605,"label":"Wisconsin Central (ftUS) \u2014 EPSG:6605"},{"code":6606,"label":"Wisconsin North \u2014 EPSG:6606"},{"code":6607,"label":"Wisconsin North (ftUS) \u2014 EPSG:6607"},{"code":6608,"label":"Wisconsin South \u2014 EPSG:6608"},{"code":6609,"label":"Wisconsin South (ftUS) \u2014 EPSG:6609"},{"code":6610,"label":"Wisconsin Transverse Mercator \u2014 EPSG:6610"},{"code":6611,"label":"Wyoming East \u2014 EPSG:6611"},{"code":6612,"label":"Wyoming East (ftUS) \u2014 EPSG:6612"},{"code":6613,"label":"Wyoming East Central \u2014 EPSG:6613"},{"code":6614,"label":"Wyoming East Central (ftUS) \u2014 EPSG:6614"},{"code":6615,"label":"Wyoming West \u2014 EPSG:6615"},{"code":6616,"label":"Wyoming West (ftUS) \u2014 EPSG:6616"},{"code":6617,"label":"Wyoming West Central \u2014 EPSG:6617"},{"code":6618,"label":"Wyoming West Central (ftUS) \u2014 EPSG:6618"}]</script>
@@ -335,9 +680,10 @@
   const NAD83_2011_SPCS = JSON.parse(document.getElementById("nad83-2011-spcs-data").textContent);
 
   const GLOBAL_EPSG_ROWS = [
-    { code: 4326, label: "WGS 84 (lon/lat) — EPSG:4326" },
-    { code: 3857, label: "WGS 84 / Pseudo-Mercator (Web Mercator) — EPSG:3857" },
-    { code: 9000, label: "ITRF2014, frame epoch 2010.0 (geographic lat/lon) — EPSG:9000" },
+    { code: 4326,  label: "WGS 84 (lon/lat) \u2014 EPSG:4326" },
+    { code: 3857,  label: "WGS 84 / Pseudo-Mercator (Web Mercator) \u2014 EPSG:3857" },
+    { code: 6318,  label: "NAD83(2011) geographic lat/lon \u2014 EPSG:6318" },
+    { code: 9000,  label: "ITRF2014, frame epoch 2010.0 (geographic lat/lon) \u2014 EPSG:9000" },
   ];
 
   const EPSG_TO_LABEL = new Map();
@@ -359,14 +705,133 @@
     addCuratedRow(NAD83_2011_SPCS[si].code, NAD83_2011_SPCS[si].label);
   }
 
+  // ---------------------------------------------------------------------------
+  // Geographic bounding boxes for US states/territories — used to filter the
+  // target CRS list once we know where the input data is located.
+  // Format: [minLon, minLat, maxLon, maxLat]
+  // ---------------------------------------------------------------------------
+  const STATE_BBOX = {
+    Alabama:          [-88.5, 30.1, -84.9, 35.0],
+    Alaska:           [-180,  51.0, -130,  71.5],
+    Arizona:          [-114.9,31.3, -109.0,37.0],
+    Arkansas:         [-94.6, 33.0, -89.6, 36.5],
+    California:       [-124.5,32.5, -114.1,42.0],
+    Colorado:         [-109.1,36.9, -102.0,41.0],
+    Connecticut:      [-73.7, 40.9, -71.8, 42.1],
+    Conus:            [-125,  24.0, -66.0, 50.0],
+    Delaware:         [-75.8, 38.4, -75.0, 39.8],
+    Florida:          [-87.6, 24.5, -80.0, 31.0],
+    Georgia:          [-85.6, 30.4, -80.8, 35.0],
+    Idaho:            [-117.2,42.0, -111.0,49.0],
+    Illinois:         [-91.5, 36.9, -87.5, 42.5],
+    Indiana:          [-88.1, 37.8, -84.8, 41.8],
+    Iowa:             [-96.6, 40.4, -90.1, 43.5],
+    Kansas:           [-102.1,37.0, -94.6, 40.0],
+    Kentucky:         [-89.6, 36.5, -81.9, 39.1],
+    Louisiana:        [-94.1, 28.9, -89.0, 33.0],
+    Maine:            [-71.1, 43.1, -67.0, 47.5],
+    Maryland:         [-79.5, 37.9, -75.0, 39.7],
+    Massachusetts:    [-73.5, 41.2, -69.9, 42.9],
+    Michigan:         [-90.4, 41.7, -82.4, 48.3],
+    Minnesota:        [-97.2, 43.5, -89.5, 49.4],
+    Mississippi:      [-91.7, 30.2, -88.1, 35.0],
+    Missouri:         [-95.8, 36.0, -89.1, 40.6],
+    Montana:          [-116.1,44.4, -104.0,49.0],
+    Nebraska:         [-104.1,40.0, -95.3, 43.0],
+    Nevada:           [-120.0,35.0, -114.0,42.0],
+    "New Hampshire":  [-72.6, 42.7, -70.7, 45.3],
+    "New Jersey":     [-75.6, 38.9, -73.9, 41.4],
+    "New Mexico":     [-109.1,31.3, -103.0,37.0],
+    "New York":       [-79.8, 40.5, -71.9, 45.0],
+    "North Carolina": [-84.3, 33.8, -75.5, 36.6],
+    "North Dakota":   [-104.1,45.9, -96.6, 49.0],
+    Ohio:             [-84.8, 38.4, -80.5, 42.3],
+    Oklahoma:         [-103.0,33.6, -94.4, 37.0],
+    Oregon:           [-124.6,42.0, -116.5,46.3],
+    Pennsylvania:     [-80.5, 39.7, -74.7, 42.3],
+    "Puerto Rico":    [-67.3, 17.9, -65.6, 18.5],
+    "Rhode Island":   [-71.9, 41.1, -71.1, 42.0],
+    "South Carolina": [-83.4, 32.0, -78.5, 35.2],
+    "South Dakota":   [-104.1,42.5, -96.4, 45.9],
+    Tennessee:        [-90.3, 35.0, -81.6, 36.7],
+    Texas:            [-106.7,25.8, -93.5, 36.5],
+    Utah:             [-114.1,37.0, -109.0,42.0],
+    Vermont:          [-73.4, 42.7, -71.5, 45.0],
+    Virginia:         [-83.7, 36.5, -75.2, 39.5],
+    Washington:       [-124.8,45.5, -116.9,49.0],
+    "West Virginia":  [-82.6, 37.2, -77.7, 39.6],
+    Wisconsin:        [-92.9, 42.5, -86.8, 47.1],
+    Wyoming:          [-111.1,41.0, -104.0,45.0],
+  };
+
+  // Multi-word state names must be checked before splitting on first space.
+  const MULTI_WORD_STATES = [
+    "New Hampshire","New Jersey","New Mexico","New York",
+    "North Carolina","North Dakota","Rhode Island","South Carolina",
+    "South Dakota","West Virginia","Puerto Rico",
+  ];
+
+  /** Extract the state/region name from a zone label like "Indiana East — EPSG:6458". */
+  function extractStateName(label) {
+    const part = label.split(" \u2014")[0].trim(); // text before the em-dash
+    for (let i = 0; i < MULTI_WORD_STATES.length; i++) {
+      if (part.startsWith(MULTI_WORD_STATES[i])) return MULTI_WORD_STATES[i];
+    }
+    return part.split(" ")[0];
+  }
+
+  /**
+   * Build a Set of EPSG strings that are geographically relevant to the given
+   * bounding box. Always includes global CRS. Includes state plane zones whose
+   * state bbox overlaps the data bbox and UTM zones whose 6° band is nearby.
+   */
+  function computeTargetCrsFilter(minLat, maxLat, minLon, maxLon) {
+    const buf = 1.0; // degrees buffer around data bbox
+    const cLon = (minLon + maxLon) / 2;
+    const filter = new Set();
+    // Global CRS always available.
+    for (let gi = 0; gi < GLOBAL_EPSG_ROWS.length; gi++) {
+      filter.add("EPSG:" + GLOBAL_EPSG_ROWS[gi].code);
+    }
+    for (let ri = 0; ri < CURATED_ROWS.length; ri++) {
+      const row = CURATED_ROWS[ri];
+      // UTM zones: include zones within ±2 zones (12°) of data center longitude.
+      const utmMatch = row.label.match(/^UTM zone (\d+)N/);
+      if (utmMatch) {
+        const zoneNum = parseInt(utmMatch[1], 10);
+        const zoneCenterLon = (zoneNum - 1) * 6 - 180 + 3;
+        if (Math.abs(cLon - zoneCenterLon) <= 12) filter.add(row.epsg);
+        continue;
+      }
+      // State Plane: include when state bbox overlaps data bbox (with buffer).
+      const state = extractStateName(row.label);
+      const bbox = STATE_BBOX[state];
+      if (!bbox) continue;
+      if (maxLon + buf >= bbox[0] && minLon - buf <= bbox[2] &&
+          maxLat + buf >= bbox[1] && minLat - buf <= bbox[3]) {
+        filter.add(row.epsg);
+      }
+    }
+    return filter;
+  }
+
   const WGS84 = "EPSG:4326";
+  /** Number of points shown in both the input preview and output sample overlay.
+   *  Both layers use the first N rows so each red dot maps 1-to-1 onto its blue dot. */
+  const SAMPLE_N = 25;
+
   /** EPSG codes we have already pulled from epsg.io this session (proj4.js has incomplete EPSG DB) */
   const epsgDefsFetched = new Set();
 
-  let parsedData = null;
   let parsedRows = [];
   let convertedData = null;
   let currentBaseName = "coords";
+  /** Incremented on every preview request; lets stale async calls self-abort. */
+  let previewSeq = 0;
+  let inputPreviewActive = false;
+  let outputSampleActive = false;
+  /** Set<string> of EPSG codes to show in the target CRS list, or null = show all. */
+  let activeCrsFilter = null;
   const el = (id) => document.getElementById(id);
   const fileInput = el("file-input");
   const dropzone = el("dropzone");
@@ -380,7 +845,6 @@
   const colY = el("col-y");
   const btnConvert = el("btn-convert");
   const btnDownload = el("btn-download");
-  const convertHint = el("convert-hint");
   const convertStatus = el("convert-status");
   const crsFromMeta = el("crs-from-meta");
   const crsToMeta = el("crs-to-meta");
@@ -395,6 +859,11 @@
 
   const CUSTOM_SELECT_VALUE = "__custom_proj__";
 
+  // Pre-register ITRF2014 (EPSG:9000) so ensureEpsgDefsLoaded never needs a network
+  // fetch for this code. The definition is identical to the epsg.io response after
+  // sanitizeProj4 strips +type=crs.
+  proj4.defs("EPSG:9000", "+proj=longlat +ellps=GRS80 +no_defs");
+
   /** Geographic center of the contiguous U.S. (near Lebanon, KS); zoom shows full lower 48. */
   const map = L.map("map").setView([39.8283, -98.5795], 4);
   /** Carto CDN serves OSM-based tiles; avoids tile.openstreetmap.org 403s some users see (usage policy / blocking). */
@@ -408,13 +877,61 @@
   );
   const satellite = L.tileLayer(
     "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
-    { attribution: "Tiles © Esri", maxZoom: 19 }
+    {
+      attribution: "Tiles © Esri",
+      /* Match street maxZoom; load native tiles to z19 then scale so first addLayer never disagrees with map zoom. */
+      maxZoom: 20,
+      maxNativeZoom: 19,
+    }
   );
   L.control.layers({ Street: street, Satellite: satellite }).addTo(map);
   street.addTo(map);
 
+  /** Run after preview/status DOM updates finish (await tryOutputSample), so Leaflet's size/cache match the map box. */
+  function scheduleMapLayoutRefresh() {
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        map.invalidateSize();
+      });
+    });
+  }
+
+  map.on("baselayerchange", function () {
+    scheduleMapLayoutRefresh();
+  });
+
   let origLayer = L.featureGroup().addTo(map);
+  let sampleLayer = L.featureGroup().addTo(map);
   let convLayer = L.featureGroup().addTo(map);
+
+  const legendControl = L.control({ position: "bottomright" });
+  legendControl.onAdd = function () {
+    const div = L.DomUtil.create("div", "map-legend");
+    div.id = "map-legend";
+    div.style.display = "none";
+    return div;
+  };
+  legendControl.addTo(map);
+
+  function updateLegend() {
+    const leg = document.getElementById("map-legend");
+    if (!leg) return;
+    const items = [];
+    const hasOrig = origLayer.getLayers().length > 0;
+    const hasConv = convLayer.getLayers().length > 0;
+    const hasSample = sampleLayer.getLayers().length > 0;
+    if (hasOrig && hasConv) {
+      items.push('<span class="leg-dot" style="background:#2563eb;border:1.5px solid #1d4ed8"></span> Original (source CRS)');
+      items.push('<span class="leg-dot" style="background:#dc2626;border:1.5px solid #b91c1c"></span> Converted (target CRS)');
+    } else if (hasOrig && hasSample) {
+      items.push('<span class="leg-dot" style="background:#2563eb;border:1.5px solid #1d4ed8"></span> Input (source CRS)');
+      items.push('<span class="leg-dot" style="background:#dc2626;opacity:0.5;border:1.5px solid #b91c1c"></span> Output sample — click dot to inspect');
+    } else if (hasOrig) {
+      items.push('<span class="leg-dot" style="background:#2563eb;border:1.5px solid #1d4ed8"></span> Input preview (source CRS)');
+    }
+    leg.innerHTML = items.join("<br>");
+    leg.style.display = items.length ? "" : "none";
+  }
 
   window.addEventListener("load", function () {
     map.invalidateSize();
@@ -423,6 +940,14 @@
   if (window.location.protocol === "file:") {
     const fileProtoHint = el("file-protocol-hint");
     if (fileProtoHint) fileProtoHint.hidden = false;
+  }
+
+  /** Return a human-readable label for a resolved CRS string.
+   *  For known EPSG codes the full catalog label (e.g. "WGS 84 (lon/lat) — EPSG:4326")
+   *  is returned; for anything else the raw string is returned unchanged.
+   */
+  function crsLabel(resolved) {
+    return EPSG_TO_LABEL.get(String(resolved).toUpperCase()) || resolved;
   }
 
   function isCustomProjString(s) {
@@ -440,8 +965,163 @@
     return trimmedRaw;
   }
 
-  function isWGS84(resolved) {
-    return String(resolved).toUpperCase() === WGS84;
+  const ITRF2014_EPSG   = "EPSG:9000";
+  const NAD83_2011_EPSG = "EPSG:6318";
+
+  // ============================================================
+  // 14-parameter Helmert: NAD83(2011) ↔ ITRF2014 (epoch 2010.0)
+  //
+  // Parameters from IERS ITRF2014 Technical Report and PROJ EPSG
+  // database. Applied at reference epoch t0 = 2010.0, so the
+  // time-rate terms cancel to zero. Convention: coordinate_frame
+  // (Bursa-Wolf). Both datums use the GRS80 ellipsoid.
+  //
+  // This lets the browser tool apply the rigorous ~1 m datum shift
+  // without any external grids or network access — the same
+  // transformation PROJ/pyproj uses internally.
+  // ============================================================
+  const { helmertNADtoITRF, helmertITRFtoNAD } = (function () {
+    const A   = 6378137.0;
+    const E2  = 0.00669438002290341; // e² = 2f − f², f = 1/298.257222101 (GRS80)
+    const AS2R = Math.PI / 648000.0; // arcseconds → radians
+
+    // Translation (metres), rotation (arcsec), scale (ppm) — NAD83(2011) → ITRF2014
+    const TX =  1.0053,   TY = -1.90921,  TZ = -0.54157;
+    const RXR =  0.02678138 * AS2R;
+    const RYR = -0.00042027 * AS2R;
+    const RZR =  0.01093206 * AS2R;
+    const SC  = 1.0 + 0.00036891e-6; // 1 + s_ppm × 10⁻⁶
+
+    function geodToECEF(lon, lat) {
+      const lnR = lon * Math.PI / 180, ltR = lat * Math.PI / 180;
+      const sL = Math.sin(ltR), cL = Math.cos(ltR);
+      const N = A / Math.sqrt(1.0 - E2 * sL * sL);
+      return [N * cL * Math.cos(lnR),  N * cL * Math.sin(lnR),  N * (1.0 - E2) * sL];
+    }
+
+    function ECEFToGeod(X, Y, Z) {
+      const lon = Math.atan2(Y, X) * 180.0 / Math.PI;
+      const p   = Math.hypot(X, Y);
+      let lat = Math.atan2(Z, p * (1.0 - E2));
+      for (let i = 0; i < 10; i++) {
+        const s = Math.sin(lat);
+        const N = A / Math.sqrt(1.0 - E2 * s * s);
+        const n = Math.atan2(Z + E2 * N * s, p);
+        if (Math.abs(n - lat) < 1e-12) { lat = n; break; }
+        lat = n;
+      }
+      return [lon, lat * 180.0 / Math.PI];
+    }
+
+    // NAD83(2011) → ITRF2014
+    // The published params define the FORWARD direction as ITRF2014→NAD83 (position_vector
+    // rotation convention). Going NAD83→ITRF2014 requires the inverse: M_pvᵀ·(X−T)/scale.
+    function helmertNADtoITRF(lon, lat) {
+      const [X, Y, Z] = geodToECEF(lon, lat);
+      const iS = 1.0 / SC;
+      const dx = X - TX, dy = Y - TY, dz = Z - TZ;
+      return ECEFToGeod(
+        iS * (dx        - RZR * dy + RYR * dz),
+        iS * (RZR * dx  + dy       - RXR * dz),
+        iS * (-RYR * dx + RXR * dy + dz      )
+      );
+    }
+
+    // ITRF2014 → NAD83(2011): forward published params (position_vector convention)
+    // X_nad = T + scale · M_pv · X_itrf
+    function helmertITRFtoNAD(lon, lat) {
+      const [X, Y, Z] = geodToECEF(lon, lat);
+      return ECEFToGeod(
+        TX + SC * (X        + RZR * Y - RYR * Z),
+        TY + SC * (-RZR * X + Y       + RXR * Z),
+        TZ + SC * (RYR * X  - RXR * Y + Z      )
+      );
+    }
+
+    return { helmertNADtoITRF, helmertITRFtoNAD };
+  }());
+
+  /**
+   * Returns true when the from/to pair is NAD83(2011) ↔ ITRF2014 in either direction.
+   * These are handled by the built-in Helmert transform, not proj4.js.
+   */
+  function isHelmertPair(fromR, toR) {
+    const f = String(fromR).toUpperCase(), t = String(toR).toUpperCase();
+    return (f === NAD83_2011_EPSG && t === ITRF2014_EPSG) ||
+           (f === ITRF2014_EPSG   && t === NAD83_2011_EPSG);
+  }
+
+  /**
+   * Returns the correct Helmert function for the given direction.
+   * @returns {function(number, number): [number, number]}
+   */
+  function helmertFnFor(fromR, toR) {
+    return String(fromR).toUpperCase() === NAD83_2011_EPSG
+      ? helmertNADtoITRF
+      : helmertITRFtoNAD;
+  }
+
+  function isWGS84(resolved)       { return String(resolved).toUpperCase() === WGS84;           }
+  function isItrf2014(resolved)    { return String(resolved).toUpperCase() === ITRF2014_EPSG;   }
+  function isNad83_2011(resolved)  { return String(resolved).toUpperCase() === NAD83_2011_EPSG; }
+
+  /**
+   * Returns true for geographic CRS that output lon/lat degrees and are close
+   * enough to WGS 84 to plot directly on the Leaflet map without a proj4
+   * round-trip. NAD83(2011) and ITRF2014 both differ from WGS 84 by ≤1 m —
+   * imperceptible at any web-map zoom level.
+   */
+  function isGeographicLatLon(resolved) {
+    const up = String(resolved).toUpperCase();
+    return up === WGS84 || up === ITRF2014_EPSG || up === NAD83_2011_EPSG;
+  }
+
+  /**
+   * Show or clear datum-accuracy warnings in the pair-error area.
+   * Called whenever either CRS selection changes.
+   *
+   * Key pairs and their real-world offsets in CONUS (proj4.js cannot model any of these):
+   *   NAD83(2011) ↔ ITRF2014  — ~1 m (~4 ft): tectonic plate drift since 1992 NAD83 epoch.
+   *   WGS 84      ↔ ITRF2014  — ~1–2 cm: WGS 84 is periodically re-aligned to ITRF; current
+   *                              WGS 84 (G2139) ≈ ITRF2020; older realizations differ slightly.
+   *   NAD83(2011) ↔ WGS 84    — same order as NAD83↔ITRF2014 (~1 m); WGS 84 tracks ITRF.
+   */
+  function updateItrf2014Warning() {
+    const pairErr = el("crs-pair-error");
+    // Only manage this element when it is empty or already showing our amber warning.
+    if (pairErr.style.color && pairErr.style.color !== "rgb(180, 83, 9)" &&
+        pairErr.textContent && !pairErr.textContent.startsWith("\u26a0")) return;
+    const fromR = getResolvedFrom();
+    const toR   = getResolvedTo();
+    const involvesItrf    = isItrf2014(fromR)   || isItrf2014(toR);
+    const involvesNad83g  = isNad83_2011(fromR) || isNad83_2011(toR);
+
+    if (involvesNad83g && involvesItrf) {
+      // The surveyor's pair: RTK/CORS output (NAD83(2011)) vs global frame (ITRF2014).
+      // The built-in 14-parameter Helmert handles this correctly — show an info note only.
+      pairErr.textContent =
+        "\u2139 NAD83(2011) \u2194 ITRF2014: these frames differ by ~1\u202fm (~4\u202fft) " +
+        "in CONUS due to North American tectonic plate motion since the 1992 NAD83 epoch. " +
+        "This conversion is handled by a built-in 14-parameter Helmert transformation " +
+        "(IERS ITRF2014 parameters) \u2014 no grids or network access needed. " +
+        "Results should agree with PROJ/pyproj to better than 1\u202fmm.";
+      pairErr.style.color = "#15803d";
+    } else if (involvesItrf) {
+      // WGS 84 ↔ ITRF2014: offset is ~1–2 cm for current WGS 84 realization.
+      pairErr.textContent =
+        "\u26a0 ITRF2014 (EPSG:9000) note: the datum shift between ITRF2014 and WGS\u202f84 " +
+        "is <2\u202fcm for the current WGS\u202f84 realization (G2139) — acceptable for most " +
+        "practical purposes. For RTK survey work requiring the full NAD83(2011) \u2194 ITRF2014 " +
+        "shift (~1\u202fm / 4\u202fft), use the Python CLI: " +
+        "coordshift convert file.csv --from nad83-2011 --to itrf2014 " +
+        "(PROJ applies a built-in 14-parameter Helmert; no grids needed).";
+      pairErr.style.color = "#b45309";
+    } else {
+      if (pairErr.style.color === "rgb(180, 83, 9)") {
+        pairErr.textContent = "";
+        pairErr.style.color = "";
+      }
+    }
   }
 
   function sanitizeProj4(defStr) {
@@ -506,6 +1186,13 @@
     crsToErr.textContent = "";
     const fromR = resolveCRS(fromInput);
     const toR = resolveCRS(toInput);
+
+    // NAD83(2011) ↔ ITRF2014 is handled entirely by the built-in Helmert transform.
+    // proj4.js has no knowledge of this datum shift so we skip its validation checks.
+    if (isHelmertPair(fromR, toR)) {
+      return { from: fromR, to: toR };
+    }
+
     try {
       await ensureEpsgDefsLoaded(fromR);
     } catch (e) {
@@ -541,14 +1228,20 @@
   }
 
   /**
-   * @returns {L.LatLng | null} Leaflet lat/lng, or null if inputs or transform are non-finite.
+   * Convert a point in resolvedCrs to a Leaflet LatLng for map display.
+   * Geographic CRS that output lon/lat (WGS84, NAD83(2011), ITRF2014) are
+   * plotted directly — their ≤1 m differences are invisible on a web map.
+   * Projected CRS (state plane, UTM, Web Mercator) are back-projected via proj4.
+   * @returns {L.LatLng | null} null if inputs or the transform are non-finite.
    */
   function toLeafletLatLng(x, y, resolvedCrs) {
     if (!Number.isFinite(x) || !Number.isFinite(y)) {
       return null;
     }
     try {
-      if (isWGS84(resolvedCrs)) {
+      if (isGeographicLatLon(resolvedCrs)) {
+        // x = longitude, y = latitude — valid range check before handing to Leaflet.
+        if (y < -90 || y > 90 || x < -180 || x > 360) return null;
         return L.latLng(y, x);
       }
       const out = proj4(resolvedCrs, WGS84).forward([x, y]);
@@ -591,22 +1284,28 @@
   function applyParseResult(rows, metaLabel) {
     if (!rows || rows.length === 0) {
       fileMeta.textContent = "No rows found.";
-      parsedData = null;
       parsedRows = [];
       updateConvertState();
       return;
     }
     parsedRows = rows;
-    parsedData = { meta: metaLabel, rows };
     const headers = Object.keys(rows[0]);
     fillColumnSelects(headers);
     fileMeta.textContent = metaLabel + " — " + rows.length + " row(s), " + headers.length + " column(s).";
     convertStatus.textContent = "";
+    el("preview-status").textContent = "";
     convertedData = null;
     btnDownload.disabled = true;
     origLayer.clearLayers();
+    sampleLayer.clearLayers();
     convLayer.clearLayers();
+    inputPreviewActive = false;
+    outputSampleActive = false;
+    activeCrsFilter = null;
+    refreshTargetCrsSelect();
+    updateLegend();
     updateConvertState();
+    void tryInputPreview();
   }
 
   function parseFileOrText(text, filename) {
@@ -614,7 +1313,6 @@
     if (parsed.errors.length) {
       const first = parsed.errors[0];
       fileMeta.textContent = "CSV error: " + first.message + " (row " + first.row + ")";
-      parsedData = null;
       parsedRows = [];
       updateConvertState();
       return;
@@ -626,9 +1324,6 @@
   function updateConvertState() {
     const ready = parsedRows && parsedRows.length > 0 && colX.value && colY.value;
     btnConvert.disabled = !ready;
-    convertHint.textContent = ready
-      ? "Choose CRS and columns, then Convert."
-      : "Load a CSV to enable conversion.";
   }
 
   function makeConvertedXYColumnNames(xColName, yColName, templateRow) {
@@ -650,7 +1345,12 @@
    * @returns {{ rows: object[], outXCol: string, outYCol: string }}
    */
   function convertPoints(rows, fromCRS, toCRS, xColName, yColName) {
-    const transformer = proj4(fromCRS, toCRS);
+    // Use the built-in Helmert transform for NAD83(2011) ↔ ITRF2014 instead of proj4.js,
+    // which does not carry the 14-parameter datum-shift parameters for this pair.
+    const useHelmert = isHelmertPair(fromCRS, toCRS);
+    const helmertFn  = useHelmert ? helmertFnFor(fromCRS, toCRS) : null;
+    const transformer = useHelmert ? null : proj4(fromCRS, toCRS);
+
     const templateRow = rows.length ? rows[0] : {};
     const { outX, outY } = makeConvertedXYColumnNames(xColName, yColName, templateRow);
     const converted = rows.map(function (row) {
@@ -659,10 +1359,13 @@
       if (!Number.isFinite(x) || !Number.isFinite(y)) {
         return Object.assign({}, row, { _error: true });
       }
-      let newX;
-      let newY;
+      let newX, newY;
       try {
-        [newX, newY] = transformer.forward([x, y]);
+        if (useHelmert) {
+          [newX, newY] = helmertFn(x, y);
+        } else {
+          [newX, newY] = transformer.forward([x, y]);
+        }
       } catch (_) {
         return Object.assign({}, row, { _error: true });
       }
@@ -691,7 +1394,11 @@
     return "";
   }
 
-  function populateCrsSelect(selectEl, searchEl, hiddenEl, projTa) {
+  /**
+   * @param {Set<string>|null} filterSet  Optional set of EPSG strings to include.
+   *   Null = show all. The currently-selected CRS is always shown even if filtered.
+   */
+  function populateCrsSelect(selectEl, searchEl, hiddenEl, projTa, filterSet) {
     const q = searchEl.value.trim().toLowerCase();
     const current = getCurrentCrsValue(hiddenEl, selectEl, projTa);
     selectEl.innerHTML = "";
@@ -725,10 +1432,16 @@
       o.textContent = stickyRow.label + " (selected)";
       selectEl.appendChild(o);
     }
+    let shown = 0;
+    let total = 0;
     for (let i = 0; i < CURATED_ROWS.length; i++) {
       const row = CURATED_ROWS[i];
       if (stickyRow && row.epsg === stickyRow.epsg) continue;
       if (q && !row.hay.includes(q)) continue;
+      total++;
+      // Apply geographic filter — always show the currently-selected CRS.
+      if (filterSet && !filterSet.has(row.epsg) && row.epsg.toUpperCase() !== current.toUpperCase()) continue;
+      shown++;
       const o = document.createElement("option");
       o.value = row.epsg;
       o.textContent = row.label;
@@ -749,6 +1462,30 @@
       selectEl.selectedIndex = idx >= 0 ? idx : 0;
     } else {
       selectEl.selectedIndex = 0;
+    }
+    return { shown, total };
+  }
+
+  /** Repopulate the target CRS select and update the filter note below it. */
+  function refreshTargetCrsSelect() {
+    const { shown, total } = populateCrsSelect(
+      crsToSelect, crsToSearch, crsTo, crsToProj, activeCrsFilter
+    );
+    const noteEl = el("crs-to-filter-note");
+    if (activeCrsFilter && total > shown) {
+      noteEl.hidden = false;
+      noteEl.innerHTML =
+        "Showing " + shown + " of " + total + " CRS relevant to your data\u2019s location. " +
+        "<a id=\"crs-filter-clear\">Show all</a>";
+      const clearLink = document.getElementById("crs-filter-clear");
+      if (clearLink) {
+        clearLink.addEventListener("click", function () {
+          activeCrsFilter = null;
+          refreshTargetCrsSelect();
+        });
+      }
+    } else {
+      noteEl.hidden = true;
     }
   }
 
@@ -799,32 +1536,43 @@
   }
 
   crsFromSearch.addEventListener("input", function () {
-    populateCrsSelect(crsFromSelect, crsFromSearch, crsFrom, crsFromProj);
+    populateCrsSelect(crsFromSelect, crsFromSearch, crsFrom, crsFromProj, null);
   });
   crsToSearch.addEventListener("input", function () {
-    populateCrsSelect(crsToSelect, crsToSearch, crsTo, crsToProj);
+    refreshTargetCrsSelect();
   });
 
   crsFromSelect.addEventListener("change", function () {
     onCrsSelectChange(crsFrom, crsFromMeta, true);
+    updateItrf2014Warning();
+    void tryInputPreview();
   });
   crsToSelect.addEventListener("change", function () {
     onCrsSelectChange(crsTo, crsToMeta, false);
+    updateItrf2014Warning();
+    void tryOutputSample();
   });
+
+  let _fromProjDebounce = null;
+  let _toProjDebounce = null;
 
   crsFromProj.addEventListener("input", function () {
     if (crsFromSelect.value !== CUSTOM_SELECT_VALUE) return;
     refreshCrsMeta(syntheticMetaInput(crsFrom, crsFromSelect, crsFromProj), crsFromMeta);
     if (!crsFromProj.value.trim()) crsFromMeta.textContent = "Enter PROJ.4 below.";
+    clearTimeout(_fromProjDebounce);
+    _fromProjDebounce = setTimeout(function () { void tryInputPreview(); }, 600);
   });
   crsToProj.addEventListener("input", function () {
     if (crsToSelect.value !== CUSTOM_SELECT_VALUE) return;
     refreshCrsMeta(syntheticMetaInput(crsTo, crsToSelect, crsToProj), crsToMeta);
     if (!crsToProj.value.trim()) crsToMeta.textContent = "Enter PROJ.4 below.";
+    clearTimeout(_toProjDebounce);
+    _toProjDebounce = setTimeout(function () { void tryOutputSample(); }, 600);
   });
 
-  populateCrsSelect(crsFromSelect, crsFromSearch, crsFrom, crsFromProj);
-  populateCrsSelect(crsToSelect, crsToSearch, crsTo, crsToProj);
+  populateCrsSelect(crsFromSelect, crsFromSearch, crsFrom, crsFromProj, null);
+  refreshTargetCrsSelect();
 
   fileInput.addEventListener("change", function () {
     const f = fileInput.files && fileInput.files[0];
@@ -846,41 +1594,317 @@
     }
   });
 
-  ["dragenter", "dragover"].forEach(function (ev) {
-    dropzone.addEventListener(ev, function (e) {
-      e.preventDefault();
-      e.stopPropagation();
-      dropzone.classList.add("dragover");
-    });
+  // Full-page drag-and-drop: show overlay whenever a file is dragged over any part of the page.
+  const dragOverlay = el("drag-overlay");
+  let dragCounter = 0;
+
+  document.addEventListener("dragenter", function (e) {
+    const hasFiles = e.dataTransfer && e.dataTransfer.types &&
+      Array.prototype.some.call(e.dataTransfer.types, function (t) { return t === "Files"; });
+    if (!hasFiles) return;
+    dragCounter++;
+    dragOverlay.classList.add("active");
+    e.preventDefault();
   });
-  ["dragleave", "drop"].forEach(function (ev) {
-    dropzone.addEventListener(ev, function (e) {
-      e.preventDefault();
-      e.stopPropagation();
+
+  document.addEventListener("dragleave", function (e) {
+    dragCounter = Math.max(0, dragCounter - 1);
+    if (dragCounter === 0) {
+      dragOverlay.classList.remove("active");
       dropzone.classList.remove("dragover");
-    });
+    }
   });
-  dropzone.addEventListener("drop", function (e) {
-    const f = e.dataTransfer.files[0];
-    if (!f || !/\.csv$/i.test(f.name)) {
+
+  document.addEventListener("dragover", function (e) {
+    e.preventDefault();
+    if (e.dataTransfer) e.dataTransfer.dropEffect = "copy";
+  });
+
+  document.addEventListener("drop", function (e) {
+    e.preventDefault();
+    dragCounter = 0;
+    dragOverlay.classList.remove("active");
+    dropzone.classList.remove("dragover");
+    const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+    if (!f) return;
+    if (!/\.csv$/i.test(f.name)) {
       fileMeta.textContent = "Please drop a .csv file.";
       return;
     }
     const reader = new FileReader();
     reader.onload = function () {
       parseFileOrText(String(reader.result), f.name);
-      dropzoneLabel.textContent = "Drop a CSV here or click to browse";
+      dropzoneLabel.textContent = "📂 Open CSV";
     };
     reader.readAsText(f);
   });
 
-  colX.addEventListener("change", updateConvertState);
-  colY.addEventListener("change", updateConvertState);
+  colX.addEventListener("change", function () { updateConvertState(); void tryInputPreview(); });
+  colY.addEventListener("change", function () { updateConvertState(); void tryInputPreview(); });
 
   refreshCrsMeta(crsFrom, crsFromMeta);
   refreshCrsMeta(crsTo, crsToMeta);
   crsFromCustomWrap.hidden = crsFromSelect.value !== CUSTOM_SELECT_VALUE;
   crsToCustomWrap.hidden = crsToSelect.value !== CUSTOM_SELECT_VALUE;
+
+  /**
+   * Project input points → map using source CRS.
+   * Runs automatically when file, columns, or source CRS change.
+   */
+  async function tryInputPreview() {
+    const seq = ++previewSeq;
+    const previewStatus = el("preview-status");
+    try {
+      origLayer.clearLayers();
+      sampleLayer.clearLayers();
+      convLayer.clearLayers();
+      inputPreviewActive = false;
+      outputSampleActive = false;
+      convertedData = null;
+      btnDownload.disabled = true;
+      activeCrsFilter = null;
+      refreshTargetCrsSelect();
+      updateLegend();
+
+      if (!parsedRows || parsedRows.length === 0) {
+        previewStatus.textContent = "";
+        return;
+      }
+      if (!colX.value || !colY.value) {
+        previewStatus.textContent = "";
+        return;
+      }
+
+      const fromRaw = getResolvedFrom();
+      if (!fromRaw) {
+        previewStatus.textContent = "Select a source CRS to preview your data on the map.";
+        return;
+      }
+
+      previewStatus.textContent = "Loading source CRS…";
+      try {
+        await ensureEpsgDefsLoaded(fromRaw);
+        if (seq !== previewSeq) return;
+        proj4(fromRaw, WGS84);
+      } catch (_) {
+        if (seq !== previewSeq) return;
+        previewStatus.textContent = "Source CRS not recognized — cannot preview.";
+        return;
+      }
+
+      const xCol = colX.value;
+      const yCol = colY.value;
+      const preview = parsedRows.slice(0, SAMPLE_N);
+      let plotted = 0;
+
+      for (let pi = 0; pi < preview.length; pi++) {
+        const row = preview[pi];
+        const x = parseFloat(row[xCol]);
+        const y = parseFloat(row[yCol]);
+        const ll = toLeafletLatLng(x, y, fromRaw);
+        if (!ll) continue;
+        L.circleMarker(ll, {
+          radius: 5,
+          color: "#1d4ed8",
+          fillColor: "#2563eb",
+          fillOpacity: 0.7,
+          weight: 1.5,
+        }).addTo(origLayer);
+        plotted++;
+      }
+
+      if (seq !== previewSeq) return;
+
+      if (plotted === 0) {
+        previewStatus.textContent =
+          "No points could be plotted — check that the correct X/Y columns and source CRS are selected.";
+        updateLegend();
+        return;
+      }
+
+      inputPreviewActive = true;
+      const truncLabel = parsedRows.length > SAMPLE_N ? " (first " + SAMPLE_N + " of " + parsedRows.length + ")" : "";
+      previewStatus.innerHTML =
+        '<span style="color:#1d4ed8;font-weight:600">&#9679; ' +
+        plotted + " input points shown" + truncLabel + "</span>" +
+        " — does the location look correct? If so, pick a target CRS below.";
+
+      try {
+        const b = origLayer.getBounds();
+        if (b && b.isValid()) {
+          map.invalidateSize();
+          map.fitBounds(b, { padding: [28, 28], maxZoom: 16, animate: false });
+
+          // Filter the target CRS list to options relevant to this data's location.
+          const sw = b.getSouthWest();
+          const ne = b.getNorthEast();
+          activeCrsFilter = computeTargetCrsFilter(sw.lat, ne.lat, sw.lng, ne.lng);
+          refreshTargetCrsSelect();
+        }
+      } catch (_) {}
+
+      updateLegend();
+
+      // If a target CRS is already selected, run the output sample immediately.
+      await tryOutputSample(seq);
+    } finally {
+      scheduleMapLayoutRefresh();
+    }
+  }
+
+  /**
+   * Convert a small sample using the target CRS and overlay it in red.
+   * Lets the user verify the output CRS before running full conversion.
+   */
+  async function tryOutputSample(callerSeq) {
+    const seq = callerSeq !== undefined ? callerSeq : ++previewSeq;
+    const previewStatus = el("preview-status");
+    try {
+      sampleLayer.clearLayers();
+      outputSampleActive = false;
+      updateLegend();
+
+      if (!inputPreviewActive) return;
+
+      const toRaw = getResolvedTo();
+      if (!toRaw) return;
+
+      const fromRaw = getResolvedFrom();
+
+      // NAD83(2011) ↔ ITRF2014 is handled by built-in Helmert — skip proj4.js validation.
+      const useHelmert = isHelmertPair(fromRaw, toRaw);
+      if (!useHelmert) {
+        try {
+          await ensureEpsgDefsLoaded(toRaw);
+          if (seq !== previewSeq) return;
+          proj4(toRaw, WGS84);
+        } catch (_) {
+          if (seq !== previewSeq) return;
+          return;
+        }
+        try {
+          proj4(fromRaw, toRaw);
+        } catch (_) {
+          return;
+        }
+      }
+
+      const xCol = colX.value;
+      const yCol = colY.value;
+      const sample = parsedRows.slice(0, SAMPLE_N);
+      let plotted = 0;
+      const projectedExamples = []; // holds {x,y,cx,cy} when output is out of lat/lon range
+
+      try {
+        const helmertFn  = useHelmert ? helmertFnFor(fromRaw, toRaw) : null;
+        const transformer = useHelmert ? null : proj4(fromRaw, toRaw);
+        for (let si = 0; si < sample.length; si++) {
+          const row = sample[si];
+          const x = parseFloat(row[xCol]);
+          const y = parseFloat(row[yCol]);
+          if (!Number.isFinite(x) || !Number.isFinite(y)) continue;
+          let cx, cy;
+          try {
+            if (useHelmert) {
+              [cx, cy] = helmertFn(x, y);
+            } else {
+              [cx, cy] = transformer.forward([x, y]);
+            }
+          } catch (_) { continue; }
+          if (!Number.isFinite(cx) || !Number.isFinite(cy)) continue;
+
+          // Back-project converted output to WGS84 for map display.
+          // Works for both geographic output (ITRF2014, Web Mercator) and projected
+          // output (state plane, UTM in meters/feet) — red dots land on blue input dots
+          // when the CRS is correct; they drift if the wrong CRS is chosen.
+          // Track projected (non-geographic) samples for the status bar readout.
+          const isProjectedOutput = !(cy >= -90 && cy <= 90 && cx >= -180 && cx <= 360);
+          if (isProjectedOutput && projectedExamples.length < 2) {
+            projectedExamples.push({ x, y, cx, cy });
+          }
+          const ll = toLeafletLatLng(cx, cy, toRaw);
+          if (!ll) {
+            if (!isProjectedOutput && projectedExamples.length < 2) projectedExamples.push({ x, y, cx, cy });
+            continue;
+          }
+
+          const popup =
+            "<b>Input (" + crsLabel(fromRaw) + ")</b><br>" +
+            "X: " + x.toFixed(6) + "<br>Y: " + y.toFixed(6) +
+            "<hr style='margin:4px 0'>" +
+            "<b>Output (" + crsLabel(toRaw) + ")</b><br>" +
+            "X: " + cx.toFixed(6) + "<br>Y: " + cy.toFixed(6);
+          L.circleMarker(ll, {
+            radius: 5,
+            color: "#b91c1c",
+            fillColor: "#dc2626",
+            fillOpacity: 0.5,
+            weight: 1.5,
+          }).bindPopup(popup).addTo(sampleLayer);
+          plotted++;
+        }
+      } catch (_) { /* ignore transform errors during preview */ }
+
+      if (seq !== previewSeq) return;
+
+      const inputCount = origLayer.getLayers().length;
+      const truncated = parsedRows.length > SAMPLE_N;
+      const inputSpan = '<span style="color:#1d4ed8;font-weight:600">&#9679; ' +
+        inputCount + (truncated ? " of " + parsedRows.length : "") + " input</span>";
+
+      if (plotted === 0) {
+        // Back-projection failed for all sample points — show raw sample values only.
+        const toLabel = EPSG_TO_LABEL.get(toRaw.toUpperCase()) || "";
+        const unitHint = /\bft(US)?\b/i.test(toLabel) ? "ft" : "m";
+        let sampleStr = "";
+        if (projectedExamples.length > 0) {
+          const e = projectedExamples[0];
+          sampleStr = " Sample: (" + e.x.toFixed(4) + ", " + e.y.toFixed(4) + ")" +
+            " \u2192 (" + e.cx.toFixed(2) + "\u2009" + unitHint +
+            ", " + e.cy.toFixed(2) + "\u2009" + unitHint + ").";
+        }
+        previewStatus.innerHTML =
+          inputSpan +
+          ' &nbsp; <span style="color:#16a34a;font-weight:600">&#10003; CRS validated</span>' +
+          " \u2014 map preview unavailable for this CRS." + sampleStr +
+          " Ready to <b>Convert</b>.";
+        updateLegend();
+        return;
+      }
+
+      outputSampleActive = true;
+      const toLabel = EPSG_TO_LABEL.get(toRaw.toUpperCase()) || "";
+      const unitHint = /\bft(US)?\b/i.test(toLabel) ? "ft" : "m";
+      let projSampleStr = "";
+      if (projectedExamples.length > 0) {
+        const e = projectedExamples[0];
+        projSampleStr = ' &nbsp; <span style="color:#64748b">Projected: ' +
+          e.cx.toFixed(2) + "\u2009" + unitHint + ", " + e.cy.toFixed(2) + "\u2009" + unitHint + ".</span>";
+      }
+      previewStatus.innerHTML =
+        inputSpan +
+        ' &nbsp; <span style="color:#dc2626;font-weight:600">&#9679; ' +
+        plotted + " sample output</span>" +
+        " \u2014 <b>correct CRS: red dots overlap blue dots</b>; wrong CRS: red dots drift." +
+        projSampleStr +
+        " Click a dot to inspect, then Convert &amp; Download.";
+
+      // Fit after preview DOM updates; scheduleMapLayoutRefresh() in finally runs
+      // afterward so Leaflet control hit targets match the map box.
+      try {
+        let b = origLayer.getBounds();
+        if (sampleLayer.getLayers().length) b = b.extend(sampleLayer.getBounds());
+        if (b && b.isValid()) {
+          map.invalidateSize();
+          map.fitBounds(b, { padding: [28, 28], maxZoom: 16, animate: false });
+        }
+      } catch (_) {}
+
+      updateLegend();
+    } finally {
+      scheduleMapLayoutRefresh();
+    }
+  }
 
   btnConvert.addEventListener("click", function () {
     void (async function () {
@@ -888,6 +1912,8 @@
     convertStatus.textContent = "";
     crsFromErr.textContent = "";
     crsToErr.textContent = "";
+    el("crs-pair-error").textContent = "";
+    el("crs-pair-error").style.color = "";
     const fromRaw = getResolvedFrom();
     const toRaw = getResolvedTo();
     if (!fromRaw) {
@@ -939,8 +1965,15 @@
     const errors = convertedData.filter((r) => r._error).length;
     const ok = convertedData.length - errors;
     convertStatus.textContent = "✓ " + ok + " rows converted" + (errors ? ", " + errors + " skipped (invalid coordinates or transform)" : "");
+    // Re-display ITRF2014 warning after conversion (it was cleared above).
+    updateItrf2014Warning();
 
+    // Clear preview state — full conversion takes over the map.
+    el("preview-status").textContent = "";
+    inputPreviewActive = false;
+    outputSampleActive = false;
     origLayer.clearLayers();
+    sampleLayer.clearLayers();
     convLayer.clearLayers();
 
     const fromR = pair.from;
@@ -980,14 +2013,14 @@
         ", " +
         Number(oy).toFixed(4) +
         " (" +
-        fromR +
+        crsLabel(fromR) +
         ")<br/>" +
         "Converted: " +
         cx.toFixed(4) +
         ", " +
         cy.toFixed(4) +
         " (" +
-        toR +
+        crsLabel(toR) +
         ")";
 
       origMarker.bindPopup(popup);
@@ -1021,7 +2054,8 @@
     extendPlotBounds(convLayer);
 
     map.invalidateSize();
-    var boundsToFit = plotBounds;
+    updateLegend();
+    const boundsToFit = plotBounds;
     requestAnimationFrame(function () {
       map.invalidateSize();
       if (boundsToFit && boundsToFit.isValid()) {
@@ -1063,7 +2097,6 @@
     const a = document.createElement("a");
     a.href = url;
     a.download = name;
-    a.setAttribute("download", name);
     a.style.display = "none";
     document.body.appendChild(a);
     a.click();
@@ -1071,6 +2104,28 @@
     setTimeout(function () {
       URL.revokeObjectURL(url);
     }, 2000);
+  });
+  // ---- Help modal ----
+  const helpModal = el("help-modal");
+  const helpBtn   = el("help-btn");
+  const helpClose = el("help-close");
+
+  function openHelp() {
+    helpModal.hidden = false;
+    helpClose.focus();
+  }
+  function closeHelp() {
+    helpModal.hidden = true;
+    helpBtn.focus();
+  }
+
+  helpBtn.addEventListener("click", openHelp);
+  helpClose.addEventListener("click", closeHelp);
+  helpModal.addEventListener("click", function (e) {
+    if (e.target === helpModal) closeHelp();
+  });
+  document.addEventListener("keydown", function (e) {
+    if (e.key === "Escape" && !helpModal.hidden) closeHelp();
   });
 })();
   </script>

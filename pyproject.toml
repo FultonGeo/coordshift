@@ -7,7 +7,7 @@ packages = ["coordshift"]
 
 [project]
 name = "coordshift"
-version = "0.1.2"
+version = "0.2.0"
 description = "Universal coordinate system conversion for CSV and tabular data"
 readme = "README.md"
 license = "MIT"

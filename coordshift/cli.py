@@ -20,7 +20,6 @@ from pandas.errors import EmptyDataError, ParserError
 from coordshift import __version__
 from coordshift.core import convert as convert_file
 from coordshift.crs import CRSError, search_crs
-from coordshift.presets import PRESETS
 
 
 def _configure_utf8_stdio() -> None:
@@ -45,9 +44,6 @@ def _default_output_path(input_path: str) -> str:
     return str(p.with_name(f"{p.name}_converted"))
 
 
-def _format_preset_line(name: str, epsg: str, description: str) -> str:
-    """Format one preset for terminal output."""
-    return f"{name}  →  {epsg}  —  {description}"
 
 
 @click.group()
@@ -59,8 +55,8 @@ def cli():
 
 @cli.command()
 @click.argument("filepath", type=click.Path(exists=True))
-@click.option("--from", "from_crs", required=True, help="Source CRS (e.g. EPSG:4326, wgs84)")
-@click.option("--to", "to_crs", required=True, help="Target CRS (e.g. EPSG:2965, indiana-east)")
+@click.option("--from", "from_crs", required=True, help="Source CRS (e.g. EPSG:4326 or PROJ string)")
+@click.option("--to", "to_crs", required=True, help="Target CRS (e.g. EPSG:6458 or PROJ string)")
 @click.option("--x", default=None, help="X/longitude/easting column name (auto-detected if omitted)")
 @click.option("--y", default=None, help="Y/latitude/northing column name (auto-detected if omitted)")
 @click.option(
@@ -114,32 +110,21 @@ def convert(filepath, from_crs, to_crs, x, y, suffix, out):
 
 
 @cli.command()
-@click.argument("query")
-def search(query):
-    """Search for a CRS by name or keyword. Example: coordshift search 'indiana'"""
-    results = search_crs(query)
+@click.argument("query", nargs=-1, required=True)
+def search(query: tuple[str, ...]) -> None:
+    """Search for a CRS by name or keyword.
+
+    Accepts one or more words — all words must match.
+
+    \b
+    Examples:
+      coordshift search iowa
+      coordshift search iowa south
+      coordshift search state plane north
+    """
+    results = search_crs(" ".join(query))
     if not results:
-        click.echo(f"No presets found matching: {query}")
+        click.echo(f"No results found for: {' '.join(query)}")
         return
-    for row in sorted(results, key=lambda r: r["name"]):
-        click.echo(
-            _format_preset_line(
-                row["name"],
-                str(row["epsg"]),
-                str(row["description"]),
-            )
-        )
-
-
-@cli.command()
-def list_crs():
-    """List all built-in CRS presets."""
-    for name in sorted(PRESETS.keys()):
-        data = PRESETS[name]
-        click.echo(
-            _format_preset_line(
-                name,
-                str(data["epsg"]),
-                str(data.get("description", "")),
-            )
-        )
+    for row in results:
+        click.echo(f"{row['epsg']}  —  {row['name']}")

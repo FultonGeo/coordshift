@@ -9,5 +9,5 @@ Basic usage:
 from coordshift.core import convert
 from coordshift.crs import resolve_crs, search_crs
 
-__version__ = "0.1.1"
+__version__ = "0.2.0"
 __all__ = ["convert", "resolve_crs", "search_crs"]

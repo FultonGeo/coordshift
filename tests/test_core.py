@@ -13,7 +13,7 @@ FIXTURES = Path(__file__).resolve().parent / "fixtures"
 def test_wgs84_to_indiana_east_transform_points() -> None:
     """Known WGS84 lon/lat projects to Indiana State Plane East (EPSG:2965)."""
     from_crs = resolve_crs("EPSG:4326")
-    to_crs = resolve_crs("indiana-east")
+    to_crs = resolve_crs("EPSG:2965")
     xs, ys = transform_points(
         xs=[-86.15],
         ys=[39.77],
@@ -27,7 +27,7 @@ def test_wgs84_to_indiana_east_transform_points() -> None:
 def test_wgs84_indiana_east_round_trip() -> None:
     """WGS84 → Indiana East → WGS84 closes within 0.0001 degrees."""
     lon0, lat0 = -86.1525, 39.7689
-    wgs84 = resolve_crs("wgs84")
+    wgs84 = resolve_crs("EPSG:4326")
     ind_e = resolve_crs("EPSG:2965")
 
     xe, ye = transform_points([lon0], [lat0], wgs84, ind_e)
@@ -49,8 +49,8 @@ def test_convert_reads_and_writes(tmp_path: Path) -> None:
     outp = tmp_path / "out.csv"
     df = convert(
         str(inp),
-        from_crs="wgs84",
-        to_crs="indiana-east",
+        from_crs="EPSG:4326",
+        to_crs="EPSG:2965",
         output=str(outp),
     )
     assert outp.is_file()
@@ -73,8 +73,8 @@ def test_convert_with_suffix_keeps_original_columns(tmp_path: Path) -> None:
     outp = tmp_path / "out_suffix.csv"
     df = convert(
         str(inp),
-        from_crs="wgs84",
-        to_crs="indiana-east",
+        from_crs="EPSG:4326",
+        to_crs="EPSG:2965",
         suffix="_converted",
         output=str(outp),
     )
